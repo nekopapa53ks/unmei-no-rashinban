@@ -3,9 +3,9 @@
 このフォルダは Capacitor で作った iOSアプリのプロジェクトです（`www/` が実際のアプリ画面、`ios/` が Xcode プロジェクト）。
 AdMob（バナー + リワード広告）はコード側の実装済みです。
 
-## ① Apple Developer Program に登録する（未登録）
-- https://developer.apple.com/programs/ から登録（年間 $99）
-- 本人確認に数日かかることがあるので早めに着手
+## ① Apple Developer Program に登録する ✅ 完了
+- チームID: `AN856756JR`（登録タイプ：個人、更新日 2027年9月19日）
+- CodemagicでのiOS署名設定時にこのチームIDを使用する
 
 ## ② AdMob側の準備 ✅ 完了
 - アプリID: `ca-app-pub-1027443362095260~1934400282`
@@ -21,10 +21,10 @@ AdMob（バナー + リワード広告）はコード側の実装済みです。
 
 ## ③ Macがないので、クラウドビルドサービスでビルドする
 おすすめは **Codemagic**（Capacitor/iOSに対応、無料枠あり）
-1. https://codemagic.io/ でアカウント作成
-2. このプロジェクトを GitHub 等のリポジトリにpushする（Codemagicはリポジトリ連携が前提）
+1. ~~このプロジェクトを GitHub 等のリポジトリにpushする~~ ✅ 完了（`https://github.com/nekopapa53ks/unmei-no-rashinban`）
+2. https://codemagic.io/ でアカウント作成（未着手）
 3. Codemagic側で「Capacitor」テンプレートを選び、iOSビルドを設定
-4. Apple Developer のチーム情報・証明書（Codemagicが自動生成も可能）を連携
+4. Apple Developer のチーム情報（チームID `AN856756JR`）・証明書（Codemagicが自動生成も可能）を連携
 5. TestFlight配信→動作確認→App Store提出、の順で進める
 
 ## ④ ビルド前にやっておくこと
