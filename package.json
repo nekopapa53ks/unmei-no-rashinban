@@ -1,0 +1,15 @@
+{
+  "name": "unmei-no-rashinban",
+  "version": "1.0.0",
+  "description": "運命の羅針盤 - タロット×四柱推命×バイオリズム占いアプリ（iOS）",
+  "private": true,
+  "scripts": {
+    "sync": "cap sync"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^8.1.0",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2"
+  }
+}

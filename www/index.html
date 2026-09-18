@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>運命の羅針盤 ~タロット×四柱推命×バイオリズム~</title>
+<style>
+  :root{
+    --bg1:#0b0a1a;
+    --bg2:#1c1436;
+    --bg3:#2a1b45;
+    --gold:#cda85e;
+    --gold-soft:#e6cd94;
+    --ink:#2b2440;
+    --card:#fbf8f2;
+    --sub:#9088ad;
+    --line:#3a2f5c;
+    --violet:#8a5fd6;
+    --good:#2a8a52;
+    --bad:#c23b5a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    background:
+      radial-gradient(circle at 15% 0%, #4a2a7a55, transparent 45%),
+      radial-gradient(circle at 85% 10%, #cda85e22, transparent 40%),
+      linear-gradient(170deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    background-attachment:fixed;
+    min-height:100vh;
+    color:#e9e4f7;
+    padding:22px 12px 60px;
+  }
+  .wrap{max-width:680px;margin:0 auto;}
+  header{text-align:center;margin-bottom:20px;}
+  header .stars{letter-spacing:.4em;color:var(--gold);font-size:.8rem;margin-bottom:4px;}
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 8px;
+    letter-spacing:.06em;
+    color:#fbf3e2;
+    text-shadow:0 2px 18px rgba(205,168,94,.5);
+  }
+  header p{
+    margin:0;font-size:.8rem;color:#c8bfe6;line-height:1.8;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  .badge-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;}
+  .badge{
+    display:inline-block;background:rgba(205,168,94,.12);
+    border:1px solid rgba(205,168,94,.4);
+    border-radius:999px;padding:4px 12px;font-size:.66rem;
+    color:var(--gold-soft);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    letter-spacing:.03em;
+  }
+
+  .panel{
+    background:linear-gradient(160deg,#fbf8f2,#f4eee0);
+    border-radius:20px;
+    padding:24px 20px;
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  .form-section{margin-bottom:22px;padding-bottom:20px;border-bottom:1px dashed #e2d8f5;}
+  .form-section:last-of-type{border-bottom:none;margin-bottom:8px;padding-bottom:0;}
+  .section-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .form-section h3{
+    font-size:.92rem;margin:0 0 12px;color:#4a2f7a;letter-spacing:.03em;
+    display:flex;align-items:center;gap:8px;
+  }
+  .section-header-row h3{margin:0;}
+  .req-badge, .opt-badge{
+    font-size:.6rem;padding:2px 8px;border-radius:999px;font-weight:700;letter-spacing:.03em;
+  }
+  .req-badge{background:#fbe6e9;color:var(--bad);}
+  .opt-badge{background:#e6f0fb;color:#3b6bc2;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid2 > .field{min-width:0;}
+  .date-select-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:6px;}
+  .date-select-row select{width:100%;min-width:0;padding:10px 4px;font-size:.82rem;}
+  @media (max-width:480px){
+    .grid2{grid-template-columns:1fr;}
+  }
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  label{display:block;font-size:.76rem;color:#6c6188;margin-bottom:7px;font-weight:700;letter-spacing:.02em;}
+  input[type=text], input[type=date], select, textarea{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    padding:10px 12px;
+    border:1.5px solid #ddd3f2;
+    border-radius:10px;
+    font-size:.9rem;
+    background:#fff;
+    color:var(--ink);
+    font-family:inherit;
+    resize:vertical;
+    box-sizing:border-box;
+  }
+  input:focus, select:focus, textarea:focus{outline:2px solid var(--violet);border-color:var(--violet);}
+  .textarea-wrap{position:relative;}
+  .textarea-wrap textarea{padding-right:48px;min-height:80px;}
+  .mic-btn{
+    position:absolute;right:8px;top:8px;
+    width:34px;height:34px;border-radius:50%;
+    border:1.5px solid #ddd3f2;background:#fff;
+    font-size:.95rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease;color:var(--violet);
+  }
+  .mic-btn:hover{border-color:var(--violet);}
+  .mic-btn.listening{background:#e8375a;border-color:#e8375a;color:#fff;animation:pulse 1.1s infinite;}
+  .mic-btn:disabled{opacity:.35;cursor:not-allowed;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,55,90,.5);}70%{box-shadow:0 0 0 10px rgba(232,55,90,0);}100%{box-shadow:0 0 0 0 rgba(232,55,90,0);}}
+  .hint{font-size:.66rem;color:#a79cc4;margin-top:6px;line-height:1.6;}
+
+  button.link-toggle{
+    background:none;border:1.5px solid var(--violet);color:var(--violet);
+    border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:700;cursor:pointer;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  #partnerFields{margin-top:14px;}
+
+  .checkbox-row{
+    display:flex;align-items:center;gap:8px;font-size:.78rem;color:#6c6188;
+    font-weight:600;cursor:pointer;
+  }
+  .checkbox-row input{width:16px;height:16px;}
+
+  button.primary{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--violet), #cda85e);
+    color:#fff;
+    font-size:1rem;
+    font-weight:700;
+    letter-spacing:.06em;
+    cursor:pointer;
+    box-shadow:0 12px 26px rgba(138,95,214,.4);
+    transition:transform .15s ease;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    margin-top:6px;
+  }
+  button.primary:active{transform:scale(.97);}
+  button.ghost{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    background:transparent;
+    border:1.5px solid rgba(233,228,247,.4);
+    color:#e9e4f7;
+    font-size:.85rem;
+    cursor:pointer;
+    margin-top:16px;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  .panel button.ghost{
+    color:var(--ink);
+    border-color:#ddd3f2;
+  }
+
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* ===== hub ===== */
+  .hero-btn{
+    display:block;width:100%;text-align:center;
+    margin:2px 0 20px;padding:24px 18px;border-radius:20px;
+    border:2px solid var(--gold);
+    background:linear-gradient(135deg,#2a1b45,#3d2a63 45%,#5a3a8a);
+    color:#fff;text-decoration:none;cursor:pointer;
+    box-shadow:0 16px 34px rgba(138,95,214,.5), inset 0 0 0 1px rgba(230,205,148,.25);
+    position:relative;overflow:hidden;
+  }
+  .hero-btn:active{transform:scale(.98);}
+  .hero-btn .hero-icon{font-size:2.3rem;display:block;margin-bottom:8px;}
+  .hero-btn .hero-title{font-size:1.1rem;font-weight:700;letter-spacing:.06em;color:#fbf3e2;text-shadow:0 2px 10px rgba(205,168,94,.6);display:block;}
+  .hero-btn .hero-desc{font-size:.74rem;color:#d8cdf0;margin-top:8px;font-family:"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7;display:block;}
+  .hero-btn .hero-badge{
+    display:inline-block;margin-top:12px;font-size:.64rem;padding:4px 14px;border-radius:999px;
+    background:rgba(205,168,94,.18);border:1px solid rgba(205,168,94,.5);color:var(--gold-soft);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;letter-spacing:.05em;
+  }
+  .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+  .hub-btn{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    padding:22px 10px;border-radius:16px;border:none;cursor:pointer;
+    background:linear-gradient(160deg,#fbf8f2,#f1e6ff);
+    box-shadow:0 10px 22px rgba(0,0,0,.14);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-weight:700;font-size:.82rem;color:var(--ink);
+    text-decoration:none;
+    transition:transform .12s ease;
+  }
+  .hub-btn:active{transform:scale(.96);}
+  .hub-btn .hub-icon{font-size:1.9rem;}
+  .hub-btn:disabled, .hub-btn.disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
+  #compatHint{text-align:center;margin-top:8px;}
+
+  .hub-group{
+    background:linear-gradient(160deg,#fbf8f2,#f1e6ff);border-radius:16px;
+    padding:16px;margin-top:12px;box-shadow:0 10px 22px rgba(0,0,0,.14);
+  }
+  .hub-group-title{
+    font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:10px;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  .hub-group-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .hub-group-btns-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:480px){
+    .hub-group-btns-3{grid-template-columns:1fr;}
+  }
+  .hub-subbtn{
+    padding:12px 8px;border-radius:12px;border:none;cursor:pointer;
+    background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.08);
+    font-weight:700;font-size:.82rem;color:var(--ink);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  .hub-subbtn:active{transform:scale(.96);}
+
+  .motto-line{font-size:1.08rem;font-weight:700;color:#4a2f7a;margin:12px 0 2px;line-height:1.6;}
+  .motto-meaning{font-size:.68rem;color:var(--sub);margin-bottom:8px;}
+  .cat-box{
+    background:linear-gradient(120deg,#fff7e6,#ffe9c7);
+    border-left:4px solid var(--gold);border-radius:8px;
+    padding:10px 14px;margin:10px 0;font-size:.88rem;line-height:1.7;
+  }
+  .omikuji-tier{
+    font-size:2.1rem;font-weight:900;text-align:center;color:#4a2f7a;
+    text-shadow:0 2px 8px rgba(205,168,94,.4);margin:12px 0 16px;letter-spacing:.08em;
+  }
+  .omikuji-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+  .omikuji-cell{background:#f6f2ff;border-radius:10px;padding:8px 11px;}
+  .omikuji-cell .k{font-size:.64rem;color:var(--sub);margin-bottom:2px;}
+  .omikuji-cell .v{font-size:.82rem;font-weight:700;color:var(--ink);}
+
+  /* ===== cards ===== */
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px;}
+  .card-tag{
+    background:#f1e6ff;color:#6a3fb0;font-size:.66rem;font-weight:700;
+    padding:4px 10px;border-radius:999px;border:1px solid #dcc7fb;
+  }
+  .card-title-line{font-weight:700;color:#4a2f7a;margin-bottom:14px;font-size:1rem;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+  .orient-badge{
+    display:inline-block;font-size:.64rem;padding:2px 8px;border-radius:999px;
+    font-weight:700;
+  }
+  .orient-badge.up{background:#e4f6ea;color:#2a8a52;}
+  .orient-badge.rev{background:#fbe6e9;color:#c23b5a;}
+  .score-chip{
+    display:inline-block;font-size:.64rem;padding:2px 8px;border-radius:999px;font-weight:700;
+    background:#f4eee0;color:#8a6a1f;
+  }
+
+  .spread{display:flex;justify-content:center;padding:10px 2px 6px;}
+  .spread.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .spread.trio .card-slot{width:auto;}
+  .card-slot{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;width:160px;}
+  .card-slot .pos-label{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:.72rem;color:#6c6188;font-weight:700;letter-spacing:.05em;
+  }
+  .card-viewport{
+    width:100%;aspect-ratio:260/468;perspective:1000px;
+  }
+  .card-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .8s cubic-bezier(.2,.8,.25,1);
+    transform-style:preserve-3d;
+  }
+  .card-slot.flipped .card-inner{transform:rotateY(180deg);}
+  .card-slot:not(.flipped):hover .card-inner{transform:rotateY(8deg);}
+  .card-face{
+    position:absolute;inset:0;
+    border-radius:10px;
+    backface-visibility:hidden;
+    overflow:hidden;
+    box-shadow:0 10px 22px rgba(0,0,0,.4);
+    border:1px solid rgba(205,168,94,.5);
+  }
+  .card-face.back{
+    background:
+      repeating-linear-gradient(45deg, #2a1b45, #2a1b45 8px, #221739 8px, #221739 16px);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card-face.back::after{
+    content:"✦";color:var(--gold-soft);font-size:1.5rem;
+    text-shadow:0 0 12px rgba(205,168,94,.8);
+  }
+  .card-face.front{
+    transform:rotateY(180deg);
+    background:#111;
+  }
+  .card-face.front img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .3s ease;
+  }
+  .card-face.front.reversed img{transform:rotate(180deg);}
+  .card-slot .card-name{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:.72rem;color:#4a2f7a;text-align:center;min-height:1.4em;font-weight:700;
+  }
+  .tap-hint{
+    text-align:center;font-size:.72rem;color:#a79cc4;margin:2px 0 10px;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px;}
+  .info-cell{background:#f6f2ff;border-radius:10px;padding:9px 11px;}
+  .info-cell .k{font-size:.64rem;color:var(--sub);margin-bottom:2px;}
+  .info-cell .v{font-size:.86rem;font-weight:700;color:var(--ink);}
+
+  .pillar-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 12px;}
+  .pillar{background:#f6f2ff;border-radius:12px;padding:10px 8px;text-align:center;}
+  .pillar .pillar-label{font-size:.62rem;color:var(--sub);margin-bottom:4px;}
+  .pillar .pillar-kanji{font-size:1.1rem;font-weight:700;color:#4a2f7a;}
+  .pillar .pillar-elem{font-size:.68rem;color:#8a6a1f;margin-top:2px;}
+
+  .daymaster-box{
+    background:linear-gradient(120deg,#fff0f6,#f1e6ff);
+    border-left:4px solid var(--violet);border-radius:8px;
+    padding:12px 14px;margin:10px 0;font-size:.86rem;line-height:1.8;
+  }
+
+  .bio-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .bio-label{width:52px;font-size:.74rem;font-weight:700;color:#6c6188;flex-shrink:0;}
+  .bio-track{position:relative;flex:1;height:14px;background:#efe9fb;border-radius:999px;overflow:hidden;}
+  .bio-center-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c9bfe6;z-index:1;}
+  .bio-fill{position:absolute;top:0;bottom:0;border-radius:999px;}
+  .bio-fill.positive{left:50%;background:linear-gradient(90deg,#8a5fd6,#cda85e);}
+  .bio-fill.negative{right:50%;background:linear-gradient(90deg,#c23b5a,#e8375a);}
+  .bio-meta{width:110px;text-align:right;font-size:.7rem;font-weight:700;color:#6c6188;flex-shrink:0;}
+
+  .score-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:10px 0;}
+  .score-table td{padding:8px 4px;border-bottom:1px solid #ece4fa;vertical-align:top;}
+  .score-table td.method{white-space:nowrap;font-weight:700;color:#4a2f7a;width:1%;padding-right:10px;}
+  .score-table td.val{white-space:nowrap;text-align:right;font-weight:700;width:1%;padding-left:10px;}
+  .score-table td.val.pos{color:var(--good);}
+  .score-table td.val.neg{color:var(--bad);}
+
+  .gauge-wrap{margin:14px 0 6px;}
+  .gauge-track{position:relative;height:16px;border-radius:999px;
+    background:linear-gradient(90deg,#c23b5a,#e8375a 30%,#e6dcc9 50%,#cda85e 70%,#8a5fd6);
+    overflow:visible;
+  }
+  .gauge-marker{
+    position:absolute;top:-5px;width:4px;height:26px;background:#2b2440;border-radius:2px;
+    box-shadow:0 0 0 2px #fff;
+  }
+  .gauge-caption{display:flex;justify-content:space-between;font-size:.62rem;color:var(--sub);margin-top:6px;}
+
+  .conclusion-box{
+    background:linear-gradient(120deg,#f1e6ff,#fff0f6);
+    border:2px solid var(--violet);
+    border-radius:14px;padding:16px 16px;margin-top:12px;
+  }
+  .conclusion-box .label{font-size:.66rem;color:var(--violet);font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
+  .conclusion-box .choice{font-size:1.05rem;font-weight:700;color:#4a2f7a;line-height:1.6;}
+  .conclusion-box .conf{font-size:.78rem;color:#8a6a1f;font-weight:700;margin-top:6px;}
+
+  .next-btn-wrap{display:flex;justify-content:center;margin:6px 0 10px;}
+  .next-btn-wrap button{
+    width:auto;padding:13px 36px;border-radius:999px;border:none;
+    background:linear-gradient(135deg, var(--violet), #cda85e);
+    color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;
+    box-shadow:0 12px 24px rgba(138,95,214,.4);
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;letter-spacing:.03em;
+  }
+
+  /* ===== chat (真剣タロット flow) ===== */
+  .chat{display:flex;flex-direction:column;gap:14px;margin-bottom:18px;}
+  .msg{
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    font-size:.88rem;line-height:1.85;
+    border-radius:16px;
+    padding:14px 16px;
+    max-width:94%;
+  }
+  .msg.user{
+    align-self:flex-end;
+    background:linear-gradient(135deg,#8a5fd6,#6742a8);
+    color:#fff;
+    border-bottom-right-radius:4px;
+    white-space:pre-wrap;
+  }
+  .msg.bot{
+    align-self:flex-start;
+    background:rgba(251,248,242,.97);
+    color:var(--ink);
+    border-bottom-left-radius:4px;
+    box-shadow:0 10px 26px rgba(0,0,0,.25);
+  }
+  .msg.bot .who{
+    font-size:.68rem;color:var(--violet);font-weight:700;margin-bottom:8px;letter-spacing:.03em;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .msg.bot.typing{display:flex;gap:5px;align-items:center;padding:14px 18px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--violet);opacity:.5;animation:blink 1.2s infinite;}
+  .dot:nth-child(2){animation-delay:.2s;}
+  .dot:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.3;}40%{opacity:1;}}
+
+  .speak-btn{
+    border:1px solid #ddd3f2;background:#fff;border-radius:999px;
+    width:30px;height:30px;font-size:.8rem;cursor:pointer;color:var(--violet);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .speak-btn:hover{background:#f1e6ff;}
+  .speak-row{display:flex;justify-content:flex-end;margin-bottom:2px;}
+
+  footer{
+    text-align:center;color:#b3a7d6;font-size:.68rem;margin-top:26px;line-height:1.9;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  }
+  .disclaimer{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:12px 14px;
+    color:#d8cdf0;
+    font-size:.7rem;
+    line-height:1.75;
+    margin-top:18px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="stars">✦ ・ ✧ ・ ✦</div>
+    <h1>運命の羅針盤</h1>
+    <p>タロット×四柱推命×バイオリズムで読み解く、あなたの運命。</p>
+    <div class="badge-row">
+      <span class="badge">今日の運勢</span>
+      <span class="badge">開運コーデ</span>
+      <span class="badge">開運ごはん</span>
+      <span class="badge">イベント運</span>
+      <span class="badge">本格タロット鑑定</span>
+    </div>
+    <p style="margin-top:14px;font-size:.68rem;color:#a79cc4;">Produced by TOKIYOMI（時詠）</p>
+  </header>
+
+  <section id="setupScreen" class="screen active">
+    <div class="panel">
+      <form id="setupForm">
+        <div class="form-section">
+          <h3>① あなたの情報 <span class="req-badge">必須</span></h3>
+          <div class="field">
+            <label for="selfName">お名前（ニックネーム可）</label>
+            <input type="text" id="selfName" maxlength="30" required placeholder="例：山田 花子">
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>生年月日</label>
+              <div class="date-select-row">
+                <select id="selfDateY" required></select>
+                <select id="selfDateM" required></select>
+                <select id="selfDateD" required></select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="selfGender">性別</label>
+              <select id="selfGender" required>
+                <option value="" disabled selected>選択してください</option>
+                <option value="female">女性</option>
+                <option value="male">男性</option>
+                <option value="other">回答しない</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-header-row">
+            <h3>② お相手の情報 <span class="opt-badge">任意</span></h3>
+            <button type="button" class="link-toggle" id="partnerToggle">＋ 追加する</button>
+          </div>
+          <div id="partnerFields" style="display:none;">
+            <div class="field">
+              <label for="partnerName">お相手のお名前</label>
+              <input type="text" id="partnerName" maxlength="30" placeholder="例：鈴木 太郎">
+            </div>
+            <div class="grid2">
+              <div class="field">
+                <label>お相手の生年月日（わかる範囲で）</label>
+                <div class="date-select-row">
+                  <select id="partnerDateY"></select>
+                  <select id="partnerDateM"></select>
+                  <select id="partnerDateD"></select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="partnerGender">お相手の性別</label>
+                <select id="partnerGender">
+                  <option value="" selected>わからない</option>
+                  <option value="female">女性</option>
+                  <option value="male">男性</option>
+                  <option value="other">回答しない</option>
+                </select>
+              </div>
+            </div>
+            <div class="hint">生年月日を入力すると「簡易相性」や「真剣タロット」での相性鑑定が使えます。真剣タロット占いの中でも後から追加・変更できます。</div>
+          </div>
+        </div>
+
+        <label class="checkbox-row" style="margin-bottom:16px;">
+          <input type="checkbox" id="autoSpeak">
+          🔊 鑑定結果を音声で自動読み上げる
+        </label>
+
+        <button type="submit" class="primary">占いメニューへ →</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="hubScreen" class="screen">
+    <div class="panel">
+      <div class="card-title-line">✦ 占いメニュー</div>
+
+      <div class="hub-grid">
+        <button type="button" class="hub-btn" id="btnFortune"><span class="hub-icon">🔮</span><span>今日の運勢</span></button>
+        <button type="button" class="hub-btn" id="btnOmikuji"><span class="hub-icon">🎋</span><span>開運おみくじ</span></button>
+      </div>
+
+      <div class="hub-group">
+        <div class="hub-group-title">👗 開運コーデ</div>
+        <div class="hub-group-btns">
+          <button type="button" class="hub-subbtn" id="btnWomensCoord">👗 女性</button>
+          <button type="button" class="hub-subbtn" id="btnMensCoord">👔 男性</button>
+        </div>
+      </div>
+
+      <div class="hub-group">
+        <div class="hub-group-title">🍚 今日の開運ごはん</div>
+        <div class="hub-group-btns hub-group-btns-3">
+          <button type="button" class="hub-subbtn" id="btnLunch">☀️ 昼ごはん</button>
+          <button type="button" class="hub-subbtn" id="btnDinner">🌙 夜ごはん</button>
+          <button type="button" class="hub-subbtn" id="btnSweet">🍰 スイーツ・お酒</button>
+        </div>
+      </div>
+
+      <div class="hub-grid" style="margin-top:12px;">
+        <button type="button" class="hub-btn" id="btnEvent"><span class="hub-icon">🎉</span><span>イベント参加の開運</span></button>
+        <button type="button" class="hub-btn" id="btnCompat"><span class="hub-icon">💞</span><span>簡易相性</span></button>
+      </div>
+      <div class="hint" id="compatHint" style="display:none;">💞 簡易相性は、お相手の生年月日を入力すると使えます</div>
+
+      <button type="button" class="hero-btn" id="btnTarot">
+        <span class="hero-icon">🌟</span>
+        <span class="hero-title">真剣タロット占い</span>
+        <span class="hero-desc">過去・現在・未来を大アルカナ3枚で徹底鑑定。四柱推命・バイオリズムも重ねた本格リーディングで、具体的な結論まで導きます。</span>
+        <span class="hero-badge">✦ じっくり本格鑑定 ✦</span>
+      </button>
+
+      <button type="button" class="ghost" id="backToSetupBtn">プロフィールを入力し直す</button>
+    </div>
+  </section>
+
+  <section id="resultScreen" class="screen">
+    <div class="panel">
+      <div class="card-title-line" id="resultTitle"></div>
+
+      <div id="eventSubForm" style="display:none;">
+        <div class="field">
+          <label>イベントの日付</label>
+          <div class="date-select-row">
+            <select id="eventDateY"></select>
+            <select id="eventDateM"></select>
+            <select id="eventDateD"></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="eventType">イベントの種類</label>
+          <select id="eventType"></select>
+        </div>
+        <button type="button" class="primary" id="eventGoBtn">この日を占う</button>
+      </div>
+
+      <div id="resultCardWrap"></div>
+      <div class="tap-hint" id="tapHint" style="display:none;">🔮 カードをタップして、めくってみましょう</div>
+      <div id="resultContent" style="display:none;"></div>
+
+      <button type="button" class="ghost" id="backToHubBtn">占いメニューに戻る</button>
+    </div>
+  </section>
+
+  <section id="tarotScreen" class="screen">
+    <div class="panel" id="tarotIntroPanel">
+      <div class="card-title-line">🌟 真剣タロット占い</div>
+      <p style="font-size:.82rem;color:#6c6188;margin-top:-8px;margin-bottom:18px;line-height:1.8;">過去・現在・未来を大アルカナ3枚で徹底鑑定します。四柱推命・バイオリズムも重ねて、できるだけ具体的な答えを導きます。</p>
+
+      <div class="form-section">
+        <h3>あなたの情報 <span class="req-badge">必須・変更可</span></h3>
+        <div class="field">
+          <label for="tarotSelfName">お名前（ニックネーム可）</label>
+          <input type="text" id="tarotSelfName" maxlength="30" required placeholder="例：山田 花子">
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>生年月日</label>
+            <div class="date-select-row">
+              <select id="tarotSelfDateY" required></select>
+              <select id="tarotSelfDateM" required></select>
+              <select id="tarotSelfDateD" required></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="tarotSelfGender">性別</label>
+            <select id="tarotSelfGender" required>
+              <option value="" disabled>選択してください</option>
+              <option value="female">女性</option>
+              <option value="male">男性</option>
+              <option value="other">回答しない</option>
+            </select>
+          </div>
+        </div>
+        <div class="hint">最初に入力した内容が表示されています。この占いだけ変更したい場合はここで書き換えられます。</div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-header-row">
+          <h3>お相手の情報 <span class="opt-badge">任意・変更可</span></h3>
+          <button type="button" class="link-toggle" id="tarotPartnerClearBtn">－ 削除</button>
+        </div>
+        <div class="field">
+          <label for="tarotPartnerName">お相手のお名前</label>
+          <input type="text" id="tarotPartnerName" maxlength="30" placeholder="例：鈴木 太郎">
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>お相手の生年月日（わかる範囲で）</label>
+            <div class="date-select-row">
+              <select id="tarotPartnerDateY"></select>
+              <select id="tarotPartnerDateM"></select>
+              <select id="tarotPartnerDateD"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="tarotPartnerGender">お相手の性別</label>
+            <select id="tarotPartnerGender">
+              <option value="" selected>わからない</option>
+              <option value="female">女性</option>
+              <option value="male">男性</option>
+              <option value="other">回答しない</option>
+            </select>
+          </div>
+        </div>
+        <div class="hint">恋愛・結婚など、お相手との関係を占いたい場合にご入力ください（占いメニューの簡易相性にも反映されます）。不要な場合は「－ 削除」で消せます。</div>
+      </div>
+
+      <div class="form-section">
+        <h3>何を占いますか？</h3>
+        <div class="field">
+          <select id="tarotCategory" required>
+            <option value="" disabled selected>選択してください</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>今、悩んでいること・気になっていること</h3>
+        <div class="field">
+          <div class="textarea-wrap">
+            <textarea id="tarotWorry" rows="4" placeholder="例：今の恋人とこのまま結婚すべきか迷っています"></textarea>
+            <button type="button" class="mic-btn" id="tarotMicBtn" title="音声入力">🎤</button>
+          </div>
+          <div class="hint" id="tarotMicHint">🎤 マイクのアイコンをタップすると、話した内容を入力できます（対応ブラウザのみ）。</div>
+        </div>
+      </div>
+
+      <button type="button" class="primary" id="tarotStartBtn">占いを始める</button>
+      <button type="button" class="ghost" id="tarotBackBtn1">占いメニューに戻る</button>
+    </div>
+
+    <div class="chat" id="tarotChat" style="display:none;"></div>
+
+    <div id="tarotFollowup" style="display:none;">
+      <button type="button" class="ghost" id="tarotBackBtn2">占いメニューに戻る</button>
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    ⚠️ 本アプリはエンターテインメント目的の占いです。四柱推命は生まれた時刻の情報を用いず年柱・月柱・日柱の3本で簡易計算し、節気の境界日も概算値を使用しています。バイオリズムも一般的な3周期理論に基づく参考値です。結果は統計的な傾向を示す参考情報であり、断定や保証を行うものではありません。重要な決断はご自身の判断を優先してください。
+  </div>
+
+  <footer>
+    made with 22 Major Arcana / ローカルで動く単一HTMLアプリです<br>
+    © <span id="copyYear"></span> TOKIYOMI. All Rights Reserved.
+  </footer>
+</div>
+
+<script>
+/* ===================== AdMob（iOSアプリ版のみ有効。ブラウザ版では何もしない） ===================== */
+const IS_NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+const AdMobPlugin = (IS_NATIVE && window.Capacitor.Plugins && window.Capacitor.Plugins.AdMob) ? window.Capacitor.Plugins.AdMob : null;
+
+// 本番の広告ユニットID（AdMobコンソールで発行済み）。
+// ⚠️ 自分の端末でテストする際は、下のtestingDevicesに端末IDを必ず追加してください。
+//    （登録した端末にはテスト広告が表示されるため安全にタップ確認できます）
+//    未登録の端末で本番IDの広告を自分でクリックすると、無効なトラフィックとしてAdMobアカウント停止のリスクがあります。
+const ADMOB_IDS = {
+  banner: "ca-app-pub-1027443362095260/5266693523",
+  rewarded: "ca-app-pub-1027443362095260/1036251582",
+};
+// 自分のテスト端末のデバイスIDをここに追加（初回起動時にXcodeのコンソールログに
+// 「To get test ads on this device...」という案内とIDが表示されます）
+const ADMOB_TEST_DEVICES = [];
+
+let rewardedAdReady = false;
+
+async function prepareRewardedAd(){
+  if(!AdMobPlugin) return;
+  try{
+    await AdMobPlugin.prepareRewardVideoAd({ adId: ADMOB_IDS.rewarded });
+    rewardedAdReady = true;
+  }catch(e){
+    rewardedAdReady = false;
+    console.warn("[AdMob] リワード広告の準備に失敗しました", e);
+  }
+}
+
+async function initAds(){
+  if(!AdMobPlugin) return;
+  try{
+    await AdMobPlugin.initialize({
+      requestTrackingAuthorization: true,
+      testingDevices: ADMOB_TEST_DEVICES,
+    });
+    await AdMobPlugin.showBanner({
+      adId: ADMOB_IDS.banner,
+      adSize: "BANNER",
+      position: "BOTTOM_CENTER",
+      margin: 0,
+    });
+    await prepareRewardedAd();
+  }catch(e){
+    console.warn("[AdMob] 初期化に失敗しました", e);
+  }
+}
+
+function showRewardedAndThen(onGranted){
+  if(!AdMobPlugin || !rewardedAdReady){
+    // ネイティブ環境でない、または広告が未準備の場合は体験を止めずそのまま実行
+    onGranted();
+    if(AdMobPlugin) prepareRewardedAd();
+    return;
+  }
+  let granted = false;
+  const listener = AdMobPlugin.addListener("onRewardedVideoAdReward", ()=>{ granted = true; });
+  AdMobPlugin.showRewardVideoAd()
+    .then(()=>{
+      listener.remove();
+      rewardedAdReady = false;
+      prepareRewardedAd();
+      if(granted) onGranted();
+    })
+    .catch((e)=>{
+      console.warn("[AdMob] リワード広告の表示に失敗しました", e);
+      listener.remove();
+      rewardedAdReady = false;
+      prepareRewardedAd();
+      onGranted(); // 広告表示に失敗してもユーザー体験は止めない
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initAds);
+
+/* ===================== タロットデータ ===================== */
+const CARDS = [
+  {id:0, name:"愚者",
+    upright:{keyword:"自由・新しい始まり・無限の可能性", score:1,
+      text:"まっさらな状態から新しい一歩を踏み出そうとしている暗示です。まだ何も知らないからこそ持てる自由な発想と勇気が、あなたを後押ししています。",
+      advice:"計画が完璧でなくても、まず一歩を踏み出してみましょう。"},
+    reversed:{keyword:"無謀・準備不足・現実逃避", score:-1,
+      text:"勢いだけで動いてしまい、足元がおろそかになっている暗示です。自由と無謀は紙一重。今は一度立ち止まり、現実を見つめ直す時かもしれません。",
+      advice:"動き出す前に、小さくても構わないので計画を立て直しましょう。"}},
+  {id:1, name:"魔術師",
+    upright:{keyword:"創造力・行動力・才能の開花", score:2,
+      text:"あなたにはすでに必要な力や知恵、道具がすべて揃っています。あとはそれをどう使うかという意志の問題です。行動を起こせば、望む結果に近づいていける暗示です。",
+      advice:"頭で考えるだけでなく、今日できる小さな行動を一つ起こしてみてください。"},
+    reversed:{keyword:"空回り・力の誤用・自信喪失", score:-1,
+      text:"才能や手段はあるのに、使い方を誤っていたり、自信が持てず力を発揮しきれていない暗示です。焦って手を広げすぎていないか、一度振り返ってみましょう。",
+      advice:"手を広げすぎず、今いちばん大事なことに力を集中させましょう。"}},
+  {id:2, name:"女教皇",
+    upright:{keyword:"直感・静けさ・内なる知恵", score:1,
+      text:"表面的な情報よりも、あなた自身の直感や内側の声が正しい方向を示している暗示です。焦らず静かに耳を澄ませることで、答えはすでに見えているはずです。",
+      advice:"誰かに答えを求める前に、一人で静かに向き合う時間を作りましょう。"},
+    reversed:{keyword:"思い込み・情報不足・心の閉ざし", score:-1,
+      text:"直感を無視していたり、逆に思い込みだけで判断してしまっている暗示です。感情に蓋をせず、かといって振り回されすぎず、バランスを取り戻す必要があります。",
+      advice:"決めつける前に、事実と気持ちを分けて整理してみましょう。"}},
+  {id:3, name:"女帝",
+    upright:{keyword:"豊かさ・愛情・実り", score:2,
+      text:"愛情や豊かさが育っていく、実りの暗示です。自分にも周りにも優しくすることで、物事は自然と良い方向へ育っていきます。母のような包容力があなたを支えています。",
+      advice:"自分自身を労わることを後回しにしないでください。"},
+    reversed:{keyword:"過保護・依存・停滞", score:-1,
+      text:"与えすぎ、あるいは与えられすぎでバランスを崩している暗示です。愛情が重荷になっていたり、心地よさに甘えて成長が止まっていないか見直してみましょう。",
+      advice:"誰かに委ねすぎず、自分の足で立つ意識を持ちましょう。"}},
+  {id:4, name:"皇帝",
+    upright:{keyword:"安定・統率力・責任感", score:2,
+      text:"強い意志と責任感で物事を築き上げていく暗示です。秩序を持って計画的に進めることで、揺るぎない土台を作ることができます。今は主導権を持って動くべき時です。",
+      advice:"感情に流されず、筋道を立てて判断・行動しましょう。"},
+    reversed:{keyword:"頑固・支配・コントロール不足", score:-1,
+      text:"力でねじ伏せようとしたり、逆に主導権を失いコントロールできずにいる暗示です。頑なさが周りを遠ざけていないか、振り返る必要があります。",
+      advice:"相手の意見にも耳を傾け、力の使い方を見直しましょう。"}},
+  {id:5, name:"教皇",
+    upright:{keyword:"伝統・助言・信頼できる導き", score:1,
+      text:"経験ある人からの助言や、これまで信じてきた価値観が力になる暗示です。一人で抱え込まず、信頼できる相手や仕組みに頼ることで道が開けます。",
+      advice:"経験者や専門家に相談することを恐れないでください。"},
+    reversed:{keyword:"固定観念・形式主義・反発", score:-1,
+      text:"古い常識や周囲の目にとらわれすぎて、本来の気持ちを見失っている暗示です。「こうあるべき」という思い込みが、あなたを窮屈にしていないか確認しましょう。",
+      advice:"常識や周りの声より、自分の本音を優先してみましょう。"}},
+  {id:6, name:"恋人",
+    upright:{keyword:"選択・調和・心のつながり", score:2,
+      text:"心から納得できる選択と、深い結びつきを表す暗示です。損得ではなく「本当はどうしたいか」という気持ちに正直になることが、良い結果につながります。",
+      advice:"頭で計算せず、素直な気持ちを大切にして選びましょう。"},
+    reversed:{keyword:"迷い・すれ違い・不誠実", score:-2,
+      text:"選択を先延ばしにしていたり、気持ちがすれ違ったままになっている暗示です。表面を取り繕うのではなく、正直に向き合う勇気が必要な時です。",
+      advice:"曖昧なままにせず、率直に気持ちを伝えてみましょう。"}},
+  {id:7, name:"戦車",
+    upright:{keyword:"勝利・推進力・強い意志", score:2,
+      text:"迷いを振り切り、目標に向かって力強く前進していく暗示です。多少の困難があっても、強い意志と集中力があれば乗り越えていけるでしょう。",
+      advice:"迷っている暇があれば、まず動き出しましょう。"},
+    reversed:{keyword:"空回り・暴走・方向性の喪失", score:-1,
+      text:"勢いはあるものの、方向性を見失い空回りしている暗示です。力任せに進めるほど、かえって物事がこじれてしまうかもしれません。",
+      advice:"一度立ち止まり、目的地を再確認してから進みましょう。"}},
+  {id:8, name:"力",
+    upright:{keyword:"内なる強さ・忍耐・優しい克服", score:2,
+      text:"力ずくではなく、優しさと忍耐で物事を乗り越えていく暗示です。あなたの中にある静かな強さが、困難な状況をも和らげていくでしょう。",
+      advice:"感情的にならず、穏やかな態度で粘り強く向き合いましょう。"},
+    reversed:{keyword:"自信喪失・無力感・我慢のしすぎ", score:-1,
+      text:"自分の力を信じられず、無力感に苛まれている暗示です。あるいは我慢を重ねすぎて、心がすり減っていないか心配な状態です。",
+      advice:"一人で耐えるのではなく、誰かに頼る勇気を持ちましょう。"}},
+  {id:9, name:"隠者",
+    upright:{keyword:"内省・探求・静かな答え", score:0,
+      text:"賑やかな場所を離れ、自分自身と静かに向き合うことで答えが見えてくる暗示です。焦らず一人の時間を大切にすることが、深い気づきにつながります。",
+      advice:"周りの声から少し距離を置き、自分の内側と対話する時間を作りましょう。"},
+    reversed:{keyword:"孤立・頑なさ・視野の狭さ", score:-1,
+      text:"一人で考えすぎて孤立してしまっていたり、視野が狭くなっている暗示です。内省も度が過ぎると、かえって道を見失わせてしまいます。",
+      advice:"殻に閉じこもらず、信頼できる人に話してみましょう。"}},
+  {id:10, name:"運命の輪",
+    upright:{keyword:"転機・巡り合わせ・流れの変化", score:2,
+      text:"物事の流れが大きく動き出す暗示です。あなたの努力とは別に、タイミングや巡り合わせが味方してくれる時。この流れに素直に乗ってみましょう。",
+      advice:"訪れたチャンスや変化を、恐れずに受け入れてみましょう。"},
+    reversed:{keyword:"停滞・悪い流れ・不運の連鎖", score:-1,
+      text:"望まない方向に流れが向いていたり、物事がなかなか動かない暗示です。ただしこれも一時的なもの。流れが変わるまで無理に逆らわないことも大切です。",
+      advice:"無理に流れに逆らわず、今は力を蓄える時期と捉えましょう。"}},
+  {id:11, name:"正義",
+    upright:{keyword:"公正・バランス・冷静な判断", score:1,
+      text:"感情に流されず、公正でバランスの取れた判断をすべき、あるいはできる暗示です。誠実な態度で臨めば、正当な結果がもたらされるでしょう。",
+      advice:"感情ではなく事実に基づいて、冷静に判断しましょう。"},
+    reversed:{keyword:"不公平・偏り・判断の誤り", score:-1,
+      text:"判断が一方に偏っていたり、不誠実な扱いを受けている、あるいはしている暗示です。感情や思い込みで決めつけていないか、もう一度見直す必要があります。",
+      advice:"一度感情を脇に置いて、状況を客観的に見直しましょう。"}},
+  {id:12, name:"吊るされた男",
+    upright:{keyword:"忍耐・視点の転換・一時停止", score:0,
+      text:"今は動くよりも、あえて留まり視点を変えることに意味がある暗示です。一見不自由に見える状況が、実は新しい気づきをもたらしてくれます。",
+      advice:"焦って動かず、今の状況から見える新しい視点を探してみましょう。"},
+    reversed:{keyword:"無駄な我慢・停滞・徒労感", score:-1,
+      text:"意味のない我慢や犠牲を続けてしまっている暗示です。頑張り方や耐え方を見直さないと、努力が徒労に終わってしまうかもしれません。",
+      advice:"その我慢に本当に意味があるのか、一度立ち止まって考えましょう。"}},
+  {id:13, name:"死神",
+    upright:{keyword:"終わりと再生・区切り・手放し", score:0,
+      text:"何かが終わりを迎え、新しいステージへ切り替わっていく暗示です。恐れる必要はありません。終わりは同時に、次の始まりでもあります。",
+      advice:"執着を手放すことで、新しい流れが入ってくるでしょう。"},
+    reversed:{keyword:"停滞・変化への抵抗・引きずり", score:-2,
+      text:"終わらせるべきものにしがみつき、変化を拒んでいる暗示です。過去を引きずるほど、新しい可能性が遠のいてしまうかもしれません。",
+      advice:"終わったことは終わったことと認め、区切りをつけましょう。"}},
+  {id:14, name:"節制",
+    upright:{keyword:"調和・中庸・穏やかな循環", score:1,
+      text:"相反するものごとをうまく組み合わせ、心地よいバランスを作っていける暗示です。極端に走らず、穏やかな調整を続けることで良い流れが保たれます。",
+      advice:"白黒つけようとせず、ちょうど良いバランスを探ってみましょう。"},
+    reversed:{keyword:"不調和・過不足・我慢の限界", score:-1,
+      text:"バランスが崩れ、無理や偏りが積み重なっている暗示です。やりすぎ、あるいはやらなさすぎの状態が、心身に負担をかけていないか確認しましょう。",
+      advice:"どこかに偏りすぎていないか、生活や気持ちのバランスを見直しましょう。"}},
+  {id:15, name:"悪魔",
+    upright:{keyword:"執着・誘惑・断ち切れない依存", score:-2,
+      text:"分かっていながらも、なかなか断ち切れない執着や依存がある暗示です。それは楽な選択ではあっても、本当に望む未来には近づけないかもしれません。",
+      advice:"その関係や習慣が、自分を本当に幸せにしているか問い直してみましょう。"},
+    reversed:{keyword:"解放・気づき・悪循環からの脱出", score:1,
+      text:"縛られていたものから、少しずつ解放され始めている暗示です。悪循環に気づけたこと自体が、抜け出すための大きな一歩になります。",
+      advice:"気づいた今こそ、思い切って距離を置く決断をしましょう。"}},
+  {id:16, name:"塔",
+    upright:{keyword:"崩壊・衝撃・突然の変化", score:-2,
+      text:"積み上げてきたものが、突然崩れるような衝撃的な変化の暗示です。つらい出来事に見えても、それは無理な土台を壊し、本当の再構築を促すものです。",
+      advice:"崩れたことを嘆くより、そこから何を学べるかに目を向けましょう。"},
+    reversed:{keyword:"崩壊の予感・小さな綻び・回避", score:-1,
+      text:"大きな崩壊は免れているものの、小さな綻びやひずみが積み重なっている暗示です。無理を続けると、いずれ限界が来ることを示しています。",
+      advice:"大きく崩れる前に、無理をしている部分を今のうちに手当てしましょう。"}},
+  {id:17, name:"星",
+    upright:{keyword:"希望・癒し・静かな確信", score:2,
+      text:"傷ついた心が癒され、静かな希望が戻ってくる暗示です。派手さはなくても、確かな光があなたの進む方向を優しく照らしてくれています。",
+      advice:"焦らず、自分を信じて今できることを続けていきましょう。"},
+    reversed:{keyword:"希望の喪失・自信の欠如・理想と現実の乖離", score:-1,
+      text:"理想が高すぎて疲れてしまっていたり、希望を持てずにいる暗示です。すぐに結果が出なくても、それは失敗ではないことを思い出してください。",
+      advice:"遠くの理想ばかりでなく、今日できる小さな一歩に目を向けましょう。"}},
+  {id:18, name:"月",
+    upright:{keyword:"不安・曖昧さ・見えない本音", score:-1,
+      text:"状況がはっきり見えず、不安や迷いが大きくなっている暗示です。ただしこの曖昧さは、あなたの直感や感受性が鋭くなっているサインでもあります。",
+      advice:"答えを急がず、不安の正体を丁寧に見つめてみましょう。"},
+    reversed:{keyword:"誤解の解消・不安の軽減・霧が晴れる", score:1,
+      text:"これまで抱えていた不安や誤解が、少しずつ晴れていく暗示です。曖昧だった状況の輪郭が、はっきりと見え始めるでしょう。",
+      advice:"見えてきた真実を、恐れずに受け止めていきましょう。"}},
+  {id:19, name:"太陽",
+    upright:{keyword:"成功・喜び・素直な明るさ", score:2,
+      text:"素直な喜びと明るい成功が訪れる、非常に良い暗示です。飾らないそのままのあなたが、周りから愛され評価されるでしょう。",
+      advice:"遠慮せず、素直な気持ちと行動で前に進みましょう。"},
+    reversed:{keyword:"一時的な曇り・過信・喜びの遅れ", score:0,
+      text:"本来の明るさが少し曇っていたり、喜びが遅れて訪れる暗示です。ただし深刻な状況ではなく、一時的な足踏みと捉えて大丈夫です。",
+      advice:"焦らず、いつも通りの自分らしさを大切にしましょう。"}},
+  {id:20, name:"審判",
+    upright:{keyword:"復活・呼び覚まし・重要な決断", score:2,
+      text:"過去の経験や忘れていた可能性が呼び覚まされ、重要な決断の時を迎える暗示です。これまでの努力が、正当に報われるタイミングでもあります。",
+      advice:"過去の経験を活かし、心の声に従って決断しましょう。"},
+    reversed:{keyword:"ためらい・過去への後悔・決断の先延ばし", score:-1,
+      text:"決断すべき時に踏み出せず、過去への後悔にとらわれている暗示です。自分を責めすぎず、そこから何を学んだかに目を向けましょう。",
+      advice:"過去を悔やむより、そこから得た学びを次に活かしましょう。"}},
+  {id:21, name:"世界",
+    upright:{keyword:"完成・達成・満たされた結末", score:2,
+      text:"一つの物語が満たされた形で完成する、非常に良い暗示です。これまでの努力や経験がすべてつながり、次のステージへの扉が開かれます。",
+      advice:"これまでの頑張りを自分自身でしっかり認めてあげましょう。"},
+    reversed:{keyword:"未完成・停滞・あと一歩の足りなさ", score:0,
+      text:"あと一歩のところで完成に届いていない暗示です。焦る必要はありませんが、何が足りないのかを見極めることで、達成に近づけます。",
+      advice:"完璧を求めすぎず、足りない部分を一つずつ埋めていきましょう。"}},
+];
+
+const CATEGORIES = [
+  {id:"love", label:"恋愛・片思い", theme:"恋愛や好きな人との関係", isRelationship:true, optionA:"積極的にアプローチする", optionB:"今は距離を置いて見守る"},
+  {id:"reconcile", label:"復縁", theme:"別れてしまった相手との関係", isRelationship:true, optionA:"復縁に向けて動く", optionB:"新しい道を探す"},
+  {id:"marriage", label:"結婚・離婚", theme:"結婚や離婚に関すること", isRelationship:true, optionA:"今の関係を大切にし、前に進む", optionB:"距離を置いて、関係を見直す"},
+  {id:"work", label:"仕事", theme:"今のお仕事", isRelationship:false, optionA:"積極的に課題へ取り組む", optionB:"無理をせず今のペースを守る"},
+  {id:"career", label:"転職・キャリア", theme:"転職やこれからのキャリア", isRelationship:false, optionA:"転職に向けて動き出す", optionB:"今の場所に留まり力を蓄える"},
+  {id:"money", label:"金運・お金", theme:"金銭面のこと", isRelationship:false, optionA:"積極的に動く（投資・行動を起こす）", optionB:"守りを固め、支出を抑える"},
+  {id:"relationship", label:"人間関係", theme:"周りの方との人間関係", isRelationship:true, optionA:"自分から歩み寄る", optionB:"距離をとって様子を見る"},
+  {id:"health", label:"健康", theme:"心と体の健康", isRelationship:false, optionA:"生活習慣を積極的に見直す", optionB:"今のペースを保ちながら経過を見る"},
+  {id:"family", label:"家庭・家族", theme:"ご家庭や家族との関係", isRelationship:true, optionA:"話し合いの場を持つ", optionB:"今はそっと見守る"},
+  {id:"general", label:"総合運・これからの人生", theme:"これからの人生全体の流れ", isRelationship:false, optionA:"積極的に動く", optionB:"今は力を蓄える時期と捉える"},
+];
+const POS_LABEL = {past:"過去", present:"現在", future:"未来"};
+const POS_ORDER = ["past","present","future"];
+
+/* ===================== 四柱推命エンジン ===================== */
+const JIKKAN = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+const JUNISHI = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+const GOGYO_BY_KAN = ["木","木","火","火","土","土","金","金","水","水"];
+const ELEMENTS = ["木","火","土","金","水"];
+const ELEMENT_EMOJI = {"木":"🌳","火":"🔥","土":"🪨","金":"⚙️","水":"💧"};
+const GOGYO_PERSONALITY = {
+  "木":{
+    base:"まっすぐ上へ伸びていこうとする成長意欲と、枝葉を伸ばして周囲を巻き込んでいく生命力を持っています。向上心が強く、常に「次の目標」を探し続ける性質があり、停滞やマンネリを嫌う傾向があります。",
+    talent:"計画を立てて着実に育てていく力、新しいことを始める行動力、人を励まし引っ張っていくリーダーシップに長けています。特に、ゼロから何かを立ち上げたり、育成・教育に関わる分野で才能を発揮しやすいタイプです。",
+    weakness:"成長を急ぐあまり、周囲のペースを置き去りにしてしまったり、一度決めたことに固執して柔軟性を失うことがあります。伸び悩みを感じると急に自信をなくしやすい一面も。",
+    social:"面倒見が良く、頼られると全力で応えるタイプ。ただし自分の意見を通したい気持ちが強く出ると、衝突を招くこともあります。",
+    yearFlavor:"生まれ持った基盤に木の気質があり、幼少期から成長意欲や向上心の強さが土台として備わっています。",
+    monthFlavor:"社会に出てからの気質に木の要素が強く、キャリアにおいては成長・拡大志向で物事を進めていく傾向があります。",
+  },
+  "火":{
+    base:"内側にある情熱をまっすぐ表現し、周りを明るく照らすエネルギーを持っています。感情表現が豊かで場の空気を盛り上げる力があり、直感的に「良い」と思ったことに一気に飛び込んでいく瞬発力が特徴です。",
+    talent:"人前で表現すること、企画やアイデアを形にすること、周囲を巻き込んで盛り上げることに長けています。営業・企画・エンターテインメントなど、人の心を動かす分野で力を発揮しやすいタイプです。",
+    weakness:"感情の起伏が大きく、燃え上がった熱が冷めるのも早いため、長期的な継続が課題になりやすい面があります。カッとなりやすく、後で後悔する言動をしてしまうことも。",
+    social:"明るく社交的で人を惹きつける魅力がありますが、注目されたい気持ちが強く出ると、周囲との温度差を生むこともあります。",
+    yearFlavor:"生まれ持った基盤に火の気質があり、幼少期から感情表現の豊かさや直感的な行動力が土台として備わっています。",
+    monthFlavor:"社会に出てからの気質に火の要素が強く、キャリアにおいては情熱と勢いで物事を切り開いていく傾向があります。",
+  },
+  "土":{
+    base:"どっしりと構えて周囲を受け止める安定感と、揺るがない信頼感を持っています。物事をじっくりと腰を据えて進める堅実さがあり、急激な変化よりも着実な積み重ねを好む性質です。",
+    talent:"計画性、継続力、周囲をまとめる調整力に優れています。信頼を積み重ねることが評価につながる分野——経理・管理・不動産・教育などで力を発揮しやすいタイプです。",
+    weakness:"慎重すぎるあまり、決断や行動が遅れがちになることがあります。変化を嫌うために、必要なタイミングで動けず、機会を逃してしまうことも。",
+    social:"包容力があり、頼られると誠実に応える一方、自分の本音を後回しにして我慢を重ねやすい傾向があります。",
+    yearFlavor:"生まれ持った基盤に土の気質があり、幼少期から安定志向や我慢強さが土台として備わっています。",
+    monthFlavor:"社会に出てからの気質に土の要素が強く、キャリアにおいては着実な積み重ねで信頼を築いていく傾向があります。",
+  },
+  "金":{
+    base:"筋を通すことを大切にし、物事の本質を見抜く鋭さと、洗練された美意識を持っています。曖昧なものを嫌い、白黒はっきりさせたいという意志の強さがあり、一度決めたことはやり抜く芯の強さが特徴です。",
+    talent:"分析力、決断力、質の高いものを見極める審美眼に優れています。専門性を極める仕事——技術職・法律・金融・デザインなどで力を発揮しやすいタイプです。",
+    weakness:"正しさにこだわりすぎるあまり、周囲に対して厳しくなりすぎたり、融通が利かないと見られてしまうことがあります。プライドの高さから人に頼るのが苦手な面も。",
+    social:"誠実で信頼できる存在ですが、感情よりも論理を優先しがちで、相手に冷たい印象を与えてしまうことがあります。",
+    yearFlavor:"生まれ持った基盤に金の気質があり、幼少期から筋を通す姿勢や物事を見極める鋭さが土台として備わっています。",
+    monthFlavor:"社会に出てからの気質に金の要素が強く、キャリアにおいては専門性と決断力で道を切り開いていく傾向があります。",
+  },
+  "水":{
+    base:"形を変えながらどんな状況にも順応していく柔軟性と、物事の奥にあるものを見通す深い洞察力を持っています。表面的な情報に惑わされず、静かに本質を見極めていく性質があります。",
+    talent:"状況判断力、傾聴力、多様な人・物事をつなぐ調整力に優れています。人の相談に乗る仕事、リサーチ・分析、流動的な環境で力を発揮する仕事などで才能を発揮しやすいタイプです。",
+    weakness:"柔軟すぎるあまり、自分の軸がぶれてしまったり、周囲に流されやすい一面があります。本音を内に秘めがちで、周囲から何を考えているか分かりにくいと言われることも。",
+    social:"聞き上手で誰とでも合わせられる一方、深く踏み込まれることを避け、一定の距離を保とうとする傾向があります。",
+    yearFlavor:"生まれ持った基盤に水の気質があり、幼少期から柔軟性や物事を深く見通す洞察力が土台として備わっています。",
+    monthFlavor:"社会に出てからの気質に水の要素が強く、キャリアにおいては柔軟な対応力と洞察力で信頼を築いていく傾向があります。",
+  },
+};
+function personalityHtml(dayElem, yearElem, monthElem, label){
+  const p = GOGYO_PERSONALITY[dayElem];
+  return `
+    <div class="daymaster-box">
+      <b>${escapeHtml(label)}の基本性格</b>（日主：${ELEMENT_EMOJI[dayElem]} ${dayElem}タイプ）<br>
+      ${p.base}<br><br>
+      <b>才能・得意なこと</b><br>
+      ${p.talent}<br><br>
+      <b>注意したい面</b><br>
+      ${p.weakness}<br><br>
+      <b>人との関わり方</b><br>
+      ${p.social}
+    </div>
+    <div style="margin-top:10px;">
+      ${GOGYO_PERSONALITY[yearElem].yearFlavor}<br>
+      ${GOGYO_PERSONALITY[monthElem].monthFlavor}
+    </div>
+  `;
+}
+
+function elementIndex(e){ return ELEMENTS.indexOf(e); }
+function generatesTo(e){ return ELEMENTS[(elementIndex(e)+1)%5]; }
+function controlsTo(e){ return ELEMENTS[(elementIndex(e)+2)%5]; }
+function favorableElement(e){ return ELEMENTS[(elementIndex(e)+4)%5]; }
+function elementRelation(env, day){
+  if(generatesTo(env) === day) return {score:2, label:env+"の気が"+day+"を後押しする関係（生じられる）"};
+  if(env === day) return {score:1, label:env+"同士で気質が重なる関係（比和）"};
+  if(generatesTo(day) === env) return {score:-1, label:day+"の力が"+env+"へ吸い取られる関係（漏れる）"};
+  if(controlsTo(env) === day) return {score:-2, label:env+"の気が"+day+"に圧をかける関係（剋される）"};
+  if(controlsTo(day) === env) return {score:1, label:day+"が"+env+"を制する関係（主導権を握れる）"};
+  return {score:0, label:"中立の関係"};
+}
+function calcDayPillar(dateObj){
+  const ref = Date.UTC(1900,0,31);
+  const cur = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+  const days = Math.round((cur-ref)/86400000);
+  const kanIdx = ((days%10)+10)%10;
+  const shiIdx = ((days+4)%12+12)%12;
+  return {kanIdx, shiIdx, kan:JIKKAN[kanIdx], shi:JUNISHI[shiIdx]};
+}
+function getBaziYear(year, month, day){
+  if(month < 2 || (month===2 && day<4)) return year-1;
+  return year;
+}
+function calcYearPillar(baziYear){
+  const kanIdx = ((baziYear-4)%10+10)%10;
+  const shiIdx = ((baziYear-4)%12+12)%12;
+  return {kanIdx, shiIdx, kan:JIKKAN[kanIdx], shi:JUNISHI[shiIdx]};
+}
+function getMonthIndex(month, day){
+  if(month===1) return day<6 ? 10 : 11;
+  if(month===2) return day<4 ? 11 : 0;
+  if(month===3) return day<6 ? 0 : 1;
+  if(month===4) return day<5 ? 1 : 2;
+  if(month===5) return day<6 ? 2 : 3;
+  if(month===6) return day<6 ? 3 : 4;
+  if(month===7) return day<7 ? 4 : 5;
+  if(month===8) return day<8 ? 5 : 6;
+  if(month===9) return day<8 ? 6 : 7;
+  if(month===10) return day<8 ? 7 : 8;
+  if(month===11) return day<7 ? 8 : 9;
+  if(month===12) return day<7 ? 9 : 10;
+}
+function calcMonthPillar(baziYear, month, day){
+  const yearStemIdx = ((baziYear-4)%10+10)%10;
+  const base = [2,4,6,8,0][yearStemIdx % 5];
+  const monthIndex = getMonthIndex(month, day);
+  const kanIdx = (base + monthIndex) % 10;
+  const shiIdx = (2 + monthIndex) % 12;
+  return {kanIdx, shiIdx, kan:JIKKAN[kanIdx], shi:JUNISHI[shiIdx]};
+}
+function calcBazi(dateStr){
+  const d = new Date(dateStr + "T00:00:00");
+  const year = d.getFullYear(), month = d.getMonth()+1, day = d.getDate();
+  const baziYear = getBaziYear(year, month, day);
+  const yearPillar = calcYearPillar(baziYear);
+  const monthPillar = calcMonthPillar(baziYear, month, day);
+  const dayPillar = calcDayPillar(d);
+  const dayElement = GOGYO_BY_KAN[dayPillar.kanIdx];
+  return {yearPillar, monthPillar, dayPillar, dayElement, baziYear};
+}
+
+/* ===================== バイオリズム ===================== */
+function calcBiorhythm(birthDateStr, targetDateStr){
+  const birth = new Date(birthDateStr + "T00:00:00");
+  const target = targetDateStr ? new Date(targetDateStr + "T00:00:00") : new Date();
+  const days = Math.floor((Date.UTC(target.getFullYear(),target.getMonth(),target.getDate()) - Date.UTC(birth.getFullYear(),birth.getMonth(),birth.getDate())) / 86400000);
+  function cycleVal(len){ return Math.sin(2*Math.PI*days/len); }
+  const physical = cycleVal(23), emotional = cycleVal(28), intellectual = cycleVal(33);
+  function trend(len, val){
+    const nextVal = Math.sin(2*Math.PI*(days+1)/len);
+    if(Math.abs(val) < 0.06) return "切り替わりの時期";
+    return nextVal > val ? "上昇中" : "下降中";
+  }
+  return {
+    days, physical, emotional, intellectual,
+    physicalPct: Math.round(physical*100),
+    emotionalPct: Math.round(emotional*100),
+    intellectualPct: Math.round(intellectual*100),
+    physicalTrend: trend(23, physical),
+    emotionalTrend: trend(28, emotional),
+    intellectualTrend: trend(33, intellectual),
+  };
+}
+function biorhythmScoreOf(bio){ return (bio.physical + bio.emotional + bio.intellectual) / 1.5; }
+
+function fortuneComment(score){
+  if(score>=2) return "今のあなたを強力に後押ししてくれる、非常に良い巡り合わせです。積極的に行動することで、その追い風を最大限に活かせるでしょう。";
+  if(score>=1) return "似た気質のエネルギーが重なり、安定した落ち着いた運気です。無理に大きく動かなくても、着実に歩みを進められる時期です。";
+  if(score>=0) return "特別強い作用はなく、比較的フラットな運気です。自分のペースを大切にしましょう。";
+  if(score>=-1) return "力を注ぐ方向が多く、少しエネルギーが分散しやすい時期です。頑張りすぎず、休息やペース配分を意識しましょう。";
+  return "プレッシャーや制約を感じやすい、慎重さが求められる巡り合わせです。無理な決断は避け、状況を見極める時間を持ちましょう。";
+}
+function biorhythmComment(score){
+  if(score>=1.5) return "心身ともに絶好調の波に乗っています。積極的に動くには最適なタイミングです。";
+  if(score>=0.3) return "全体的に前向きなコンディションです。無理のない範囲で行動を起こしましょう。";
+  if(score>-0.3) return "波が安定していて、大きな乱れのない落ち着いた時期です。";
+  if(score>-1.5) return "やや調子が波打ちやすい時期です。無理をせず、休息を意識しましょう。";
+  return "心身ともに低調な時期です。大きな決断は避け、まずは休養を優先しましょう。";
+}
+function compatComment(score){
+  if(score>=1.5) return "互いを強く高め合える、とても良い相性です。";
+  if(score>=0.3) return "自然体で心地よい関係を築きやすい相性です。";
+  if(score>-0.3) return "特別強い作用はなく、努力次第でバランスを取れる相性です。";
+  if(score>-1.5) return "価値観の違いを感じやすく、歩み寄りが必要な相性です。";
+  return "エネルギーがぶつかりやすく、意識的な配慮が求められる相性です。";
+}
+function compatAdvice(score){
+  if(score>=1.5) return "今の良い関係を保つには、感謝の気持ちを言葉にして伝え続けることが大切です。";
+  if(score>=0.3) return "自然体でいられる相性なので、無理に合わせようとせず、素直な気持ちを大事にしましょう。";
+  if(score>-0.3) return "共通の趣味や目標を見つけると、関係がぐっと深まりやすくなります。";
+  if(score>-1.5) return "価値観の違いを否定せず、まず相手の話をじっくり聞く時間を増やしてみましょう。";
+  return "ぶつかりやすい相性だからこそ、感情的にならず一呼吸置いてから話すことを意識しましょう。";
+}
+function scoreQualitative(score){
+  if(score>=1.5) return "絶好調";
+  if(score>=0.3) return "好調";
+  if(score>-0.3) return "普通";
+  if(score>-1.5) return "やや不調";
+  return "要注意";
+}
+
+/* ===================== 開運ナビ機能 独自コンテンツ ===================== */
+const ELEMENT_COLOR = {
+  "木":{name:"グリーン系", detail:"若草色・エメラルドグリーン・オリーブ"},
+  "火":{name:"レッド系", detail:"赤・オレンジ・ワインレッド"},
+  "土":{name:"イエロー・ブラウン系", detail:"マスタードイエロー・ベージュ・テラコッタ"},
+  "金":{name:"ホワイト・ゴールド系", detail:"白・シルバー・ゴールド"},
+  "水":{name:"ブルー・ブラック系", detail:"ネイビー・ブラック・ディープブルー"},
+};
+const ELEMENT_DIRECTION = {"木":"東","火":"南","土":"中央（自宅や身近な場所）","金":"西","水":"北"};
+const ELEMENT_ACTION = {
+  "木":"観葉植物の手入れをする、または新しいことを1つだけ始めてみましょう。",
+  "火":"誰かに感謝の言葉を伝えると、良い流れが生まれます。",
+  "土":"身の回りを掃除して、根菜類を食事に取り入れましょう。",
+  "金":"持ち物を1つ手入れ・整理して、迷っていることに白黒つけましょう。",
+  "水":"ゆっくり入浴し、水分を多めに摂って静かな時間を作りましょう。",
+};
+const CARD_LUCKY_ITEM = ["リュック","万年筆・ペン","手帳","生花・アロマ","腕時計","本","ペアアイテム","スニーカー","リストバンド","読書灯","コイン・お守り","天秤モチーフの小物","クッション","手放す予定だったモノ","水筒","チョコレート","お守り","星モチーフのアクセサリー","アイマスク","サングラス","目覚まし時計","地球儀・地図モチーフの小物"];
+const MENS_COORDINATE = {
+  "木":{style:"ナチュラルテイスト。リネン素材のシャツやジャケットで抜け感を演出。", accessory:"木製ビーズのブレスレット"},
+  "火":{style:"アクティブでスポーティな着こなし。動きやすいジャケットやTシャツで軽快に。", accessory:"レザーのリストバンド"},
+  "土":{style:"落ち着いたベーシックスタイル。上質な素材のニットやチノパンで安定感を。", accessory:"シンプルな革ベルト"},
+  "金":{style:"きちんと感のあるジャケットスタイル。シルエットをすっきりまとめて。", accessory:"シルバーのカフス・時計"},
+  "水":{style:"リラックスした柔らかい素材のセットアップ。重心を低く落ち着いた印象に。", accessory:"ネイビーのストール・マフラー"},
+};
+const WOMENS_COORDINATE = {
+  "木":{style:"ナチュラルなワンピースやスカート。植物モチーフの柄も好相性。", accessory:"グリーンのスカーフ"},
+  "火":{style:"華やかな差し色を1つ効かせたコーデ。明るい表情を引き立てて。", accessory:"レッドのリップ・アクセサリー"},
+  "土":{style:"上質素材のワントーンコーデで落ち着きを演出。", accessory:"ベージュのバッグ"},
+  "金":{style:"きれいめでシャープなラインの服。白or光沢感のある素材が好相性。", accessory:"ゴールドのアクセサリー"},
+  "水":{style:"ゆったりシルエットで柔らかい印象に。ドレープの効いた素材が好相性。", accessory:"ブルーのパールアクセサリー"},
+};
+const FOOD_MENU = {
+  "木":{
+    lunch:["彩り野菜たっぷりのバインミー", "梅としらすのさっぱり冷やしうどん"],
+    dinner:["新鮮な魚介のカルパッチョと彩り野菜のグリル", "鶏肉と柑橘のさっぱり南蛮漬け定食"],
+    sweet:["フルーツたっぷりのパフェ", "柑橘系のシャーベットと緑茶"],
+  },
+  "火":{
+    lunch:["ピリ辛麻婆豆腐とチャーハン", "スパイシーカレーとサラダ"],
+    dinner:["炭火焼き鳥の盛り合わせと熱々もつ鍋", "香ばしい炭火ステーキと赤ワイン"],
+    sweet:["濃厚チョコレートケーキ", "スパイスの効いたホットワイン"],
+  },
+  "土":{
+    lunch:["天丼の大盛とポテトサラダ", "かぼちゃコロッケ定食"],
+    dinner:["牛肉たっぷりのすき焼きとさっぱり酢の物", "根菜たっぷりの豚汁と土鍋ご飯"],
+    sweet:["どっしり甘いモンブラン", "芋焼酎のお湯割り"],
+  },
+  "金":{
+    lunch:["白身魚フライ定食とキャベツサラダ", "冷しゃぶ大根おろし添え"],
+    dinner:["白身魚と豆腐の上品な鍋料理", "しゃぶしゃぶと大根の煮物"],
+    sweet:["上品な白いショートケーキ", "透明感のあるジンソーダ"],
+  },
+  "水":{
+    lunch:["わかめうどんと稲荷寿司", "冷やし中華と枝豆"],
+    dinner:["海鮮たっぷりの寄せ鍋", "黒豆入り炊き込みご飯とアジの塩焼き"],
+    sweet:["黒みつきなこのわらび餅", "焼酎のロックとおつまみ"],
+  },
+};
+const ELEMENT_TASTE = {"木":"酸味","火":"苦味","土":"甘味","金":"辛味","水":"塩味"};
+
+/* ===================== カード別の遊び心コンテンツ ===================== */
+const CARD_MOTTO = [
+  "一歩を恐れぬ者に、道は開ける",
+  "持てる力はすでに、あなたの中にある",
+  "静けさの中にこそ、答えがある",
+  "与える心が、豊かさを育てる",
+  "秩序を築く者が、道を制す",
+  "学びは、独りでは完成しない",
+  "心の声こそ、最良の道しるべ",
+  "迷いを捨てた者が、前へ進む",
+  "本当の強さは、優しさの中にある",
+  "灯りは、静寂の中で最も輝く",
+  "巡り来る時を、逃してはならない",
+  "誠実さは、いつか報われる",
+  "立ち止まる勇気が、視界を変える",
+  "終わりなくして、始まりはない",
+  "調和とは、極端を手放すこと",
+  "縛るものの正体は、自分自身",
+  "崩れた後にこそ、真実が残る",
+  "希望は、静かに輝き続ける",
+  "見えぬものにこそ、耳を澄ませ",
+  "素直な心が、道を照らす",
+  "過去は、未来を築く礎となる",
+  "一つの旅の終わりは、次の扉",
+];
+const CARD_ACTION = [
+  "普段と違う道を歩いて、小さな冒険をしてみましょう。",
+  "やりたかったことを、今日こそ1つ形にしてみましょう。",
+  "5分だけ目を閉じて、静かに深呼吸してみましょう。",
+  "好きな香りやお花で、自分の空間を整えましょう。",
+  "今日のスケジュールを、紙に書き出して整理しましょう。",
+  "信頼できる人に、近況を報告してみましょう。",
+  "気になる人に、素直な気持ちを一言伝えてみましょう。",
+  "後回しにしていたタスクを、1つ片付けましょう。",
+  "鏡の前で、自分に「よくやってる」と声をかけましょう。",
+  "スマホを置いて、静かな時間を10分作りましょう。",
+  "いつもと違う選択肢を、あえて選んでみましょう。",
+  "迷っていることを、紙に書いて整理しましょう。",
+  "あえて何もしない時間を、意識的に作りましょう。",
+  "使っていないものを1つ、思い切って手放しましょう。",
+  "食事や睡眠のリズムを、少し整えてみましょう。",
+  "やめたいと思っている習慣を、今日は少し減らしてみましょう。",
+  "無理をしている予定を、1つ見直しましょう。",
+  "夜空や星を、少しの時間眺めてみましょう。",
+  "モヤモヤを、紙やメモに書き出してみましょう。",
+  "今日は思い切り、素直な気持ちで笑いましょう。",
+  "ずっと迷っていたことに、今日は答えを出しましょう。",
+  "これまでの頑張りを、自分でしっかり褒めてあげましょう。",
+];
+const CARD_CAT = [
+  {up:"元気いっぱいの好奇心旺盛な子猫", rev:"迷子になりかけの向こう見ず子猫"},
+  {up:"何でもできる万能アイドル猫", rev:"力を持て余し気味な残念イケメン猫"},
+  {up:"物静かで賢い図書館の主猫", rev:"人見知りで心を閉ざした保護猫"},
+  {up:"もふもふ贅沢なペルシャ猫", rev:"甘やかしすぎて動けなくなった甘えん坊猫"},
+  {up:"貫禄たっぷりの野良猫の親分", rev:"威張り散らす頑固おやじ猫"},
+  {up:"地域猫のまとめ役、頼れる長老猫", rev:"説教くさい昔気質の頑固猫"},
+  {up:"運命の相手を見つけた恋する乙女猫", rev:"ツンデレなシャム猫（素直になれない…）"},
+  {up:"迷いなく突き進むレース猫", rev:"アクセル踏みすぎて迷子になった猫"},
+  {up:"優しく強い、みんなの心の支え猫", rev:"自信喪失中の落ち込み猫"},
+  {up:"一人時間を愛する仙猫", rev:"引きこもりすぎたぼっち猫"},
+  {up:"強運を引き寄せる幸運の招き猫", rev:"ツキに見放され気味なドジ猫"},
+  {up:"公平さにこだわるジャッジ猫", rev:"依怙贔屓しがちな困った審判猫"},
+  {up:"逆立ちして新しい景色を楽しむ変わり者猫", rev:"我慢しすぎて固まったストレス猫"},
+  {up:"生まれ変わったばかりのピカピカ新米猫", rev:"過去にしがみつく未練たらたら猫"},
+  {up:"バランス感覚抜群のヨガ猫", rev:"やりすぎ・やらなさすぎの極端猫"},
+  {up:"誘惑に負けたグルメ大食い猫", rev:"ダイエットに目覚めた決意の猫"},
+  {up:"サプライズにビックリ仰天猫", rev:"ヒヤヒヤしながら耐える綱渡り猫"},
+  {up:"希望に満ちたキラキラ瞳の猫", rev:"夢を見失いかけたお疲れ猫"},
+  {up:"夜な夜な神出鬼没な忍者猫", rev:"霧が晴れてスッキリした猫"},
+  {up:"めちゃかわいい人気者の子猫ちゃん", rev:"ちょっと曇り気味だけど根は明るい猫"},
+  {up:"覚醒して本領発揮したヒーロー猫", rev:"決断できずウダウダ悩む猫"},
+  {up:"世界一周を終えた達成感いっぱいの旅猫", rev:"あと一歩でゴールが見えないマラソン猫"},
+];
+
+/* ===================== 開運おみくじ ===================== */
+const OMIKUJI_TIERS = ["大吉","吉","中吉","小吉","末吉","凶","大凶"];
+function omikujiLevel(card, orientation){
+  const score = card[orientation].score;
+  const centerByScore = {"2":0, "1":1.5, "0":3, "-1":4.5, "-2":6};
+  const center = centerByScore[String(score)];
+  const nudge = ((card.id % 3) - 1) * 0.6;
+  let idx = Math.round(center + nudge);
+  idx = Math.max(0, Math.min(OMIKUJI_TIERS.length - 1, idx));
+  return OMIKUJI_TIERS[idx];
+}
+const OMIKUJI_DETAIL = {
+  "大吉":{待ち人:"すぐに現れる、良い知らせとともに", 願い:"叶う、迷わず進んで", 恋愛:"両想いの予感、素直な気持ちを伝えて", 縁談:"とても良い、話はまとまりやすい", 仕事:"順調、新しい挑戦も吉", 争い事:"勝つ、ただし驕らず", 失物:"すぐに見つかる", 健康:"絶好調、油断だけは禁物", 旅立ち:"大吉、楽しい思い出ができる"},
+  "吉":{待ち人:"便りあり、少し時間がかかる", 願い:"叶うが焦らず", 恋愛:"良い流れ、自分から動いて吉", 縁談:"良縁あり、じっくり話を", 仕事:"まずまず順調", 争い事:"五分五分、冷静さが鍵", 失物:"出てくる、身近な場所を探して", 健康:"良好、規則正しい生活を", 旅立ち:"良い、準備を怠らず"},
+  "中吉":{待ち人:"遅れて来る", 願い:"半ば叶う", 恋愛:"ゆっくり進展、焦りは禁物", 縁談:"悪くない、時間をかけて", 仕事:"平穏、地道な努力が実る", 争い事:"引き分け、深追いは避けて", 失物:"出てくるが時間がかかる", 健康:"おおむね良好、無理はしないで", 旅立ち:"概ね良い、天候に注意"},
+  "小吉":{待ち人:"音信あるも遅い", 願い:"控えめなら叶う", 恋愛:"波あり、相手の気持ちを尊重して", 縁談:"話は進むが慎重に", 仕事:"まずまず、無理をしない", 争い事:"避けるが吉", 失物:"出にくい、探し方を変えて", 健康:"小さな不調に注意", 旅立ち:"慎重に、持ち物確認を"},
+  "末吉":{待ち人:"来ないかもしれない", 願い:"叶いにくいが望みは残る", 恋愛:"進展はゆっくり、期待しすぎず", 縁談:"今は時期尚早", 仕事:"停滞気味、基礎固めを", 争い事:"分が悪い、争わないのが吉", 失物:"出にくい", 健康:"疲れが出やすい、休息を", 旅立ち:"変更の可能性あり"},
+  "凶":{待ち人:"来ない", 願い:"叶いにくい", 恋愛:"すれ違いに注意", 縁談:"見送るのが無難", 仕事:"トラブルに注意", 争い事:"負ける、控えるべき", 失物:"出ない", 健康:"無理は禁物、早めのケアを", 旅立ち:"見合わせるのが無難"},
+  "大凶":{待ち人:"来ない、期待しすぎないで", 願い:"叶わない、時期を改めて", 恋愛:"大きなすれ違いに注意", 縁談:"今は控えるべき", 仕事:"大きなミスに注意、慎重に", 争い事:"大敗、関わらないのが吉", 失物:"出ない、諦めが肝心", 健康:"要注意、無理は絶対に禁物", 旅立ち:"中止が無難"},
+};
+const OMIKUJI_ADVICE = {
+  "大吉":"今日は宝くじを買ってみても良いかも？✨",
+  "吉":"笑顔でいると、もっと良いことが起きそう！",
+  "中吉":"小さな親切が、大きな幸運を呼びますよ。",
+  "小吉":"無理せずマイペースが今日の合言葉。",
+  "末吉":"焦らず、今日はゆっくり過ごしてみて。",
+  "凶":"今日は早めに休んで、明日に備えましょう。",
+  "大凶":"占いはあくまで参考。前向きな気持ちが一番の開運アクションです！",
+};
+const EVENT_TYPES = [
+  {id:"wedding", label:"結婚式", flavor:"装いや振る舞いに視線が集まる日。華やかさと品の良さを意識して。"},
+  {id:"bonenkai", label:"忘年会", flavor:"素の自分を出しやすく、意外な人と打ち解けられそうです。"},
+  {id:"shinnenkai", label:"新年会", flavor:"今年の抱負を語ると、応援してくれる人が現れるかも。"},
+  {id:"gokon", label:"合コン", flavor:"第一印象がカギになる日。笑顔と聞き上手を心がけて。"},
+  {id:"nomikai", label:"呑み会", flavor:"口が軽くなりやすい日。話す内容には少し注意を。"},
+  {id:"travel", label:"旅行", flavor:"多少のハプニングも、後から良い思い出に変わりそうです。"},
+  {id:"dinner", label:"食事会", flavor:"会話の主導権を握ると、印象アップにつながります。"},
+  {id:"pool", label:"プール", flavor:"開放的な気分になれる日。日焼け・体調管理は万全に。"},
+  {id:"hanami", label:"お花見", flavor:"人との距離が縮まりやすい日。誘われたら乗ってみましょう。"},
+  {id:"interview", label:"面接", flavor:"誠実さが伝わりやすい日。背伸びせず、素直な言葉を大切に。"},
+  {id:"date", label:"デート", flavor:"何気ない一言が印象に残る日。聞き役に回ると好印象。"},
+  {id:"reunion", label:"同窓会", flavor:"懐かしい話題が思わぬ縁につながるかもしれません。"},
+];
+
+/* ===================== 共通ユーティリティ ===================== */
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[s]));
+}
+function cardFile(id){ return "cards/" + String(id).padStart(2,"0") + ".jpg"; }
+function fmtScore(n){ return (n>=0?"+":"") + n.toFixed(1); }
+function wait(ms){ return new Promise(r=>setTimeout(r, ms)); }
+function stripHtml(html){
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return (tmp.textContent || tmp.innerText || "").replace(/\s+/g," ").trim();
+}
+function shuffleIndices(n){
+  const arr = Array.from({length:n}, (_,i)=>i);
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+function drawCards(count){
+  const idx = shuffleIndices(CARDS.length).slice(0, count);
+  return idx.map(id=>({ card: CARDS[id], orientation: Math.random() < 0.5 ? "upright" : "reversed" }));
+}
+function pillarHtml(label, pillar){
+  const elem = GOGYO_BY_KAN[pillar.kanIdx];
+  return `
+    <div class="pillar">
+      <div class="pillar-label">${escapeHtml(label)}</div>
+      <div class="pillar-kanji">${pillar.kan}${pillar.shi}</div>
+      <div class="pillar-elem">${ELEMENT_EMOJI[elem]} ${elem}</div>
+    </div>
+  `;
+}
+function bioRowHtml(label, pct, trend){
+  const positive = pct >= 0;
+  const width = Math.min(Math.abs(pct), 100) * 0.5;
+  return `
+    <div class="bio-row">
+      <div class="bio-label">${escapeHtml(label)}</div>
+      <div class="bio-track">
+        <div class="bio-center-line"></div>
+        <div class="bio-fill ${positive?'positive':'negative'}" style="width:${width}%;"></div>
+      </div>
+      <div class="bio-meta">${pct>=0?'+':''}${pct}%（${trend}）</div>
+    </div>
+  `;
+}
+
+/* ===================== 音声入力・音声出力 ===================== */
+const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+function attachMic(btn, textarea, hintEl){
+  if(!SpeechRecognitionCtor){
+    btn.disabled = true;
+    btn.title = "お使いのブラウザは音声入力に対応していません";
+    if(hintEl) hintEl.textContent = "🎤 お使いのブラウザは音声入力に対応していません。テキストでご入力ください。";
+    return;
+  }
+  const recognition = new SpeechRecognitionCtor();
+  recognition.lang = "ja-JP";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  let listening = false;
+  btn.addEventListener("click", ()=>{
+    if(listening){ recognition.stop(); return; }
+    try{ recognition.start(); }catch(e){}
+  });
+  recognition.onstart = ()=>{ listening = true; btn.classList.add("listening"); btn.textContent = "●"; };
+  recognition.onend = ()=>{ listening = false; btn.classList.remove("listening"); btn.textContent = "🎤"; };
+  recognition.onerror = (e)=>{
+    listening = false; btn.classList.remove("listening"); btn.textContent = "🎤";
+    if(hintEl) hintEl.textContent = "🎤 音声入力でエラーが発生しました（"+e.error+"）。テキストでご入力ください。";
+  };
+  recognition.onresult = (e)=>{
+    const transcript = e.results[0][0].transcript;
+    textarea.value = (textarea.value ? textarea.value + " " : "") + transcript;
+  };
+}
+const SpeechSynthesisSupported = "speechSynthesis" in window;
+let autoSpeakEnabled = false;
+document.getElementById("autoSpeak").addEventListener("change", (e)=>{ autoSpeakEnabled = e.target.checked; });
+function speak(text){
+  if(!SpeechSynthesisSupported || !text) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "ja-JP";
+  utter.rate = 1.02;
+  utter.pitch = 1.0;
+  window.speechSynthesis.speak(utter);
+}
+
+/* ===================== 画面遷移 ===================== */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ===================== 生年月日入力（年/月/日プルダウン） =====================
+   iOSのSafariは <input type="date"> の見た目がOSバージョン・機種によって大きく異なり、
+   崩れの原因になるため、全端末で同じ見た目になるプルダウン方式に統一する。 */
+function populateDateSelects(prefix, opts){
+  opts = opts || {};
+  const required = opts.required !== false;
+  const minYear = opts.minYear || 1900;
+  const maxYear = opts.maxYear || new Date().getFullYear();
+  const yEl = document.getElementById(prefix + "Y");
+  const mEl = document.getElementById(prefix + "M");
+  const dEl = document.getElementById(prefix + "D");
+
+  const yBlank = required ? "" : '<option value="">年</option>';
+  const mBlank = required ? "" : '<option value="">月</option>';
+  const dBlank = required ? "" : '<option value="">日</option>';
+
+  let yOpts = yBlank;
+  for(let y=maxYear; y>=minYear; y--){ yOpts += `<option value="${y}">${y}年</option>`; }
+  yEl.innerHTML = yOpts;
+
+  let mOpts = mBlank;
+  for(let m=1; m<=12; m++){ mOpts += `<option value="${m}">${m}月</option>`; }
+  mEl.innerHTML = mOpts;
+
+  function refreshDays(){
+    const y = parseInt(yEl.value, 10) || maxYear;
+    const m = parseInt(mEl.value, 10) || 1;
+    const daysInMonth = new Date(y, m, 0).getDate();
+    const prevVal = dEl.value;
+    let dOpts = dBlank;
+    for(let d=1; d<=daysInMonth; d++){ dOpts += `<option value="${d}">${d}日</option>`; }
+    dEl.innerHTML = dOpts;
+    if(prevVal && parseInt(prevVal, 10) <= daysInMonth){ dEl.value = prevVal; }
+  }
+  yEl.addEventListener("change", refreshDays);
+  mEl.addEventListener("change", refreshDays);
+  refreshDays();
+}
+function getDateValue(prefix){
+  const y = document.getElementById(prefix + "Y").value;
+  const m = document.getElementById(prefix + "M").value;
+  const d = document.getElementById(prefix + "D").value;
+  if(!y || !m || !d) return "";
+  return `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+}
+function setDateValue(prefix, isoStr){
+  const yEl = document.getElementById(prefix + "Y");
+  const mEl = document.getElementById(prefix + "M");
+  const dEl = document.getElementById(prefix + "D");
+  if(!isoStr){
+    yEl.value = ""; mEl.value = ""; dEl.value = "";
+    return;
+  }
+  const parts = isoStr.split("-");
+  yEl.value = parts[0];
+  mEl.value = String(parseInt(parts[1], 10));
+  // 年・月を反映してから日の選択肢を更新し、その上で日を設定する
+  yEl.dispatchEvent(new Event("change"));
+  dEl.value = String(parseInt(parts[2], 10));
+}
+
+/* ===================== プロフィール入力 ===================== */
+document.getElementById("copyYear").textContent = new Date().getFullYear();
+const todayStr = new Date().toISOString().slice(0,10);
+const thisYear = new Date().getFullYear();
+populateDateSelects("selfDate", {required:true, minYear:1900, maxYear:thisYear});
+populateDateSelects("partnerDate", {required:false, minYear:1900, maxYear:thisYear});
+populateDateSelects("tarotSelfDate", {required:true, minYear:1900, maxYear:thisYear});
+populateDateSelects("tarotPartnerDate", {required:false, minYear:1900, maxYear:thisYear});
+populateDateSelects("eventDate", {required:false, minYear:thisYear-1, maxYear:thisYear+2});
+
+document.getElementById("partnerToggle").addEventListener("click", ()=>{
+  const fields = document.getElementById("partnerFields");
+  const btn = document.getElementById("partnerToggle");
+  const show = fields.style.display === "none";
+  fields.style.display = show ? "block" : "none";
+  btn.textContent = show ? "－ 閉じる" : "＋ 追加する";
+});
+
+let self_ = null, partner_ = null, selfBazi = null, selfElem = null;
+
+function syncCompatButton(){
+  const compatBtn = document.getElementById("btnCompat");
+  const compatHint = document.getElementById("compatHint");
+  const hasPartnerDate = !!(partner_ && partner_.date);
+  compatBtn.disabled = !hasPartnerDate;
+  compatHint.style.display = hasPartnerDate ? "none" : "block";
+}
+
+document.getElementById("setupForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  self_ = {
+    name: document.getElementById("selfName").value.trim() || "あなた",
+    date: getDateValue("selfDate"),
+    gender: document.getElementById("selfGender").value,
+  };
+  const pName = document.getElementById("partnerName").value.trim();
+  const pDate = getDateValue("partnerDate");
+  const pGender = document.getElementById("partnerGender").value;
+  partner_ = (pDate) ? { name: pName || "お相手", date: pDate, gender: pGender } : (pName ? {name:pName, date:null, gender:pGender} : null);
+
+  selfBazi = calcBazi(self_.date);
+  selfElem = selfBazi.dayElement;
+
+  syncCompatButton();
+  showScreen("hubScreen");
+});
+
+document.getElementById("backToSetupBtn").addEventListener("click", ()=>{
+  showScreen("setupScreen");
+});
+
+/* ===================== 四柱推命×タロットの共通イントロ（各結果に共通で使用） ===================== */
+function baziTarotIntroHtml(pick, todayElem, rel){
+  const data = pick.card[pick.orientation];
+  const orientLabel = pick.orientation==='reversed' ? '逆位置' : '正位置';
+  return `
+    <b>🀄 四柱推命</b>：今日は${ELEMENT_EMOJI[todayElem]}${todayElem}の日。あなたの日主（${ELEMENT_EMOJI[selfElem]}${selfElem}）との関係は「${rel.label}」。${fortuneComment(rel.score)}<br><br>
+    <b>🔮 タロット</b>：引いたカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）。${escapeHtml(data.text)}
+  `;
+}
+
+/* ===================== 結果画面：共通の「カード1枚→内容表示」フロー ===================== */
+function drawAndReveal(contentBuilderFn){
+  const tapHint = document.getElementById("tapHint");
+  const wrap = document.getElementById("resultCardWrap");
+  const contentEl = document.getElementById("resultContent");
+  wrap.innerHTML = "";
+  contentEl.innerHTML = "";
+  contentEl.style.display = "none";
+  tapHint.style.display = "block";
+
+  const pick = drawCards(1)[0];
+  const slot = document.createElement("div");
+  slot.className = "card-slot";
+  slot.innerHTML = `
+    <div class="card-viewport">
+      <div class="card-inner">
+        <div class="card-face back"></div>
+        <div class="card-face front"><img alt=""></div>
+      </div>
+    </div>
+    <div class="card-name"></div>
+  `;
+  const spreadWrap = document.createElement("div");
+  spreadWrap.className = "spread";
+  spreadWrap.appendChild(slot);
+  wrap.appendChild(spreadWrap);
+
+  slot.addEventListener("click", ()=>{
+    if(slot.classList.contains("flipped")) return;
+    const img = slot.querySelector(".card-face.front img");
+    img.src = cardFile(pick.card.id);
+    if(pick.orientation === "reversed"){
+      slot.querySelector(".card-face.front").classList.add("reversed");
+    }
+    const orientLabel = pick.orientation === "reversed" ? "逆位置" : "正位置";
+    slot.querySelector(".card-name").innerHTML =
+      escapeHtml(pick.card.name) + `<span class="orient-badge ${pick.orientation==='reversed'?'rev':'up'}" style="margin-left:6px;">${orientLabel}</span>`;
+    slot.classList.add("flipped");
+
+    setTimeout(()=>{
+      tapHint.style.display = "none";
+      const html = contentBuilderFn(pick);
+      const speakBtnHtml = SpeechSynthesisSupported ? `<div class="speak-row"><button type="button" class="speak-btn" id="resultSpeakBtn" title="音声で聞く">🔊</button></div>` : "";
+      const retryLabel = AdMobPlugin ? "🎬 広告を見てもう1回占う" : "🔄 もう1回占う";
+      const retryBtnHtml = `<button type="button" class="ghost" id="retryDrawBtn">${retryLabel}</button>`;
+      contentEl.innerHTML = speakBtnHtml + html + retryBtnHtml;
+      contentEl.style.display = "block";
+      const btn = document.getElementById("resultSpeakBtn");
+      if(btn) btn.addEventListener("click", ()=> speak(stripHtml(html)));
+      document.getElementById("retryDrawBtn").addEventListener("click", ()=>{
+        showRewardedAndThen(()=> drawAndReveal(contentBuilderFn));
+      });
+      if(autoSpeakEnabled) speak(stripHtml(html));
+      window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+    }, 820);
+  });
+}
+
+function openDirectResult(title, contentBuilderFn){
+  document.getElementById("resultTitle").textContent = title;
+  document.getElementById("eventSubForm").style.display = "none";
+  showScreen("resultScreen");
+  drawAndReveal(contentBuilderFn);
+}
+
+document.getElementById("backToHubBtn").addEventListener("click", ()=>{
+  showScreen("hubScreen");
+});
+
+/* ===================== ① 今日の運勢 ===================== */
+function gaugeHtml(total){
+  const maxAbs = 6;
+  const markerPct = Math.max(0, Math.min(100, ((total + maxAbs) / (maxAbs*2)) * 100));
+  return `
+    <div class="gauge-wrap">
+      <div class="gauge-track"><div class="gauge-marker" style="left:${markerPct}%;"></div></div>
+      <div class="gauge-caption"><span>要注意</span><span>総合スコア ${fmtScore(total)}（${scoreQualitative(total/1.5)}）</span><span>絶好調</span></div>
+    </div>
+  `;
+}
+
+document.getElementById("btnFortune").addEventListener("click", ()=>{
+  openDirectResult("🔮 今日の運勢", (pick)=>{
+    const data = pick.card[pick.orientation];
+    const todayPillar = calcDayPillar(new Date());
+    const todayElem = GOGYO_BY_KAN[todayPillar.kanIdx];
+    const rel = elementRelation(todayElem, selfElem);
+    const bio = calcBiorhythm(self_.date);
+    const bioScore = biorhythmScoreOf(bio);
+    const total = data.score + rel.score + bioScore;
+    const personalElem = favorableElement(selfElem);
+    const color = ELEMENT_COLOR[personalElem];
+    const direction = ELEMENT_DIRECTION[personalElem];
+    const item = CARD_LUCKY_ITEM[pick.card.id];
+    const luckyNumber = ((todayPillar.kanIdx + todayPillar.shiIdx + selfBazi.dayPillar.kanIdx + selfBazi.dayPillar.shiIdx) % 9) + 1;
+    const motto = CARD_MOTTO[pick.card.id];
+    const orientLabel = pick.orientation === "reversed" ? "逆位置" : "正位置";
+    const mottoKeyword = data.keyword.split("・")[0];
+    const catType = pick.orientation === "reversed" ? CARD_CAT[pick.card.id].rev : CARD_CAT[pick.card.id].up;
+    const action = CARD_ACTION[pick.card.id];
+    return `
+      <div>${baziTarotIntroHtml(pick, todayElem, rel)}</div>
+      <div class="motto-line">「${escapeHtml(motto)}」</div>
+      <div class="motto-meaning">『${escapeHtml(pick.card.name)}』（${orientLabel}）が示す「${escapeHtml(mottoKeyword)}」の心です。</div>
+      <div>体調・気分の波は${scoreQualitative(bioScore)}です。${biorhythmComment(bioScore)}</div>
+      ${gaugeHtml(total)}
+      <div class="info-grid" style="margin-top:14px;">
+        <div class="info-cell"><div class="k">ラッキーカラー</div><div class="v">${escapeHtml(color.name)}</div></div>
+        <div class="info-cell"><div class="k">ラッキーアイテム</div><div class="v">${escapeHtml(item)}</div></div>
+        <div class="info-cell"><div class="k">ラッキーナンバー</div><div class="v">${luckyNumber}</div></div>
+        <div class="info-cell"><div class="k">開運方角</div><div class="v">${escapeHtml(direction)}</div></div>
+      </div>
+      <div class="cat-box">🐱 <b>今日のあなたを猫に例えたら</b><br>${escapeHtml(catType)}</div>
+      <div class="daymaster-box">
+        <b>開運アクション</b><br>${escapeHtml(action)}
+      </div>
+      <div><b>注意事項</b><br>${escapeHtml(data.advice)}</div>
+    `;
+  });
+});
+
+/* ===================== 開運おみくじ ===================== */
+document.getElementById("btnOmikuji").addEventListener("click", ()=>{
+  openDirectResult("🎋 開運おみくじ", (pick)=>{
+    const tier = omikujiLevel(pick.card, pick.orientation);
+    const detail = OMIKUJI_DETAIL[tier];
+    const orientLabel = pick.orientation === "reversed" ? "逆位置" : "正位置";
+    const rows = Object.keys(detail).map(k=>
+      `<div class="omikuji-cell"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(detail[k])}</div></div>`
+    ).join("");
+    return `
+      <div style="text-align:center;font-size:.8rem;color:var(--sub);">引いたカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）</div>
+      <div class="omikuji-tier">${escapeHtml(tier)}</div>
+      <div class="omikuji-grid">${rows}</div>
+      <div class="daymaster-box">🎋 ${escapeHtml(OMIKUJI_ADVICE[tier])}</div>
+    `;
+  });
+});
+
+/* ===================== ② / ③ コーデ ===================== */
+function buildCoordinateContent(gender){
+  return (pick)=>{
+    const todayPillar = calcDayPillar(new Date());
+    const todayElem = GOGYO_BY_KAN[todayPillar.kanIdx];
+    const rel = elementRelation(todayElem, selfElem);
+    const table = gender === "men" ? MENS_COORDINATE : WOMENS_COORDINATE;
+    const base = table[selfElem];
+    const accent = ELEMENT_COLOR[todayElem];
+    const data = pick.card[pick.orientation];
+    const toneNote = data.score >= 0
+      ? "カードの後押しもあり、今日は思い切って主役級の着こなしにも挑戦できそうです。"
+      : "カードは少し慎重さを示しています。今日は無理せず、着慣れた安心感のあるアイテムを選びましょう。";
+    return `
+      <div>${baziTarotIntroHtml(pick, todayElem, rel)}</div>
+      <div class="daymaster-box">
+        <b>あなたのベースカラー・スタイル</b>（${ELEMENT_EMOJI[selfElem]}${selfElem}タイプ）<br>
+        ${escapeHtml(base.style)}<br>
+        小物・アクセサリー：${escapeHtml(base.accessory)}<br><br>
+        <b>今日のアクセントカラー</b>（${ELEMENT_EMOJI[todayElem]}${todayElem}の日）<br>
+        ${escapeHtml(accent.name)}（${escapeHtml(accent.detail)}）を差し色に取り入れると、より運気が整います。<br><br>
+        <b>今日のひと工夫</b><br>${toneNote}
+      </div>
+    `;
+  };
+}
+document.getElementById("btnMensCoord").addEventListener("click", ()=>{
+  openDirectResult("👔 男性コーデ", buildCoordinateContent("men"));
+});
+document.getElementById("btnWomensCoord").addEventListener("click", ()=>{
+  openDirectResult("👗 女性コーデ", buildCoordinateContent("women"));
+});
+
+/* ===================== ④ 今日の開運ごはん ===================== */
+function buildMealContent(mealKey, mealLabel, positiveNote, negativeNote){
+  return (pick)=>{
+    const todayPillar = calcDayPillar(new Date());
+    const todayElem = GOGYO_BY_KAN[todayPillar.kanIdx];
+    const rel = elementRelation(todayElem, selfElem);
+    const data = pick.card[pick.orientation];
+    const options = FOOD_MENU[selfElem][mealKey];
+    const dish = options[pick.card.id % options.length];
+    const oneLiner = data.score >= 0 ? positiveNote : negativeNote;
+    return `
+      <div>${baziTarotIntroHtml(pick, todayElem, rel)}</div>
+      <div class="daymaster-box">
+        <b>あなたの体質に合う${escapeHtml(mealLabel)}</b>（${ELEMENT_EMOJI[selfElem]}${selfElem}タイプ）<br>
+        ${escapeHtml(dish)}<br><br>
+        <b>今日のひとこと</b>（${ELEMENT_EMOJI[todayElem]}${todayElem}の日）<br>
+        今日は${escapeHtml(ELEMENT_TASTE[todayElem])}を意識した一品も、少し取り入れると◎。${escapeHtml(oneLiner)}
+      </div>
+    `;
+  };
+}
+document.getElementById("btnLunch").addEventListener("click", ()=>{
+  openDirectResult("☀️ 今日の開運ごはん（昼ごはん）", buildMealContent("lunch", "昼ごはん",
+    "食欲も味方してくれる日。がっつり食べて午後も元気に過ごしましょう！",
+    "軽めを意識すると、午後の調子も整いますよ。"));
+});
+document.getElementById("btnDinner").addEventListener("click", ()=>{
+  openDirectResult("🌙 今日の開運ごはん（夜ごはん）", buildMealContent("dinner", "夜ごはん",
+    "今日は少し贅沢しても◎。自分にご褒美をあげましょう。",
+    "たまには手を抜いてもいいよ。疲れてる時はUberでもOK！"));
+});
+document.getElementById("btnSweet").addEventListener("click", ()=>{
+  openDirectResult("🍰 今日の開運ごはん（スイーツ・お酒）", buildMealContent("sweet", "スイーツ・お酒",
+    "甘い物もお酒も、たまのご褒美なら◎！",
+    "飲み過ぎ・食べ過ぎには気を付けてね！"));
+});
+
+/* ===================== ⑤ イベント参加の開運 ===================== */
+const eventTypeSelect = document.getElementById("eventType");
+EVENT_TYPES.forEach(ev=>{
+  const opt = document.createElement("option");
+  opt.value = ev.id; opt.textContent = ev.label;
+  eventTypeSelect.appendChild(opt);
+});
+
+document.getElementById("btnEvent").addEventListener("click", ()=>{
+  document.getElementById("resultTitle").textContent = "🎉 イベント参加の開運";
+  document.getElementById("resultCardWrap").innerHTML = "";
+  document.getElementById("resultContent").innerHTML = "";
+  document.getElementById("resultContent").style.display = "none";
+  document.getElementById("tapHint").style.display = "none";
+  setDateValue("eventDate", todayStr);
+  document.getElementById("eventSubForm").style.display = "block";
+  showScreen("resultScreen");
+});
+
+document.getElementById("eventGoBtn").addEventListener("click", ()=>{
+  const eventDate = getDateValue("eventDate");
+  const eventTypeId = eventTypeSelect.value;
+  if(!eventDate) return;
+  const eventInfo = EVENT_TYPES.find(ev=>ev.id===eventTypeId) || EVENT_TYPES[0];
+
+  document.getElementById("eventSubForm").style.display = "none";
+  document.getElementById("resultTitle").textContent = `🎉 ${eventInfo.label}の開運（${eventDate}）`;
+
+  drawAndReveal((pick)=>{
+    const data = pick.card[pick.orientation];
+    const d = new Date(eventDate + "T00:00:00");
+    const pillar = calcDayPillar(d);
+    const elem = GOGYO_BY_KAN[pillar.kanIdx];
+    const rel = elementRelation(elem, selfElem);
+    const bio = calcBiorhythm(self_.date, eventDate);
+    const bioScore = biorhythmScoreOf(bio);
+    const orientLabel = pick.orientation==='reversed' ? '逆位置' : '正位置';
+    return `
+      <div>
+        当日は${ELEMENT_EMOJI[elem]}${elem}の日。あなたの日主との関係は「${rel.label}」。${fortuneComment(rel.score)}<br><br>
+        ${escapeHtml(eventInfo.flavor)}<br><br>
+        引いたカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）。${escapeHtml(data.text)} ${escapeHtml(data.advice)}<br><br>
+        当日のコンディションは${scoreQualitative(bioScore)}です。${biorhythmComment(bioScore)}
+      </div>
+    `;
+  });
+});
+
+/* ===================== ⑥ 簡易相性 ===================== */
+document.getElementById("btnCompat").addEventListener("click", ()=>{
+  if(!partner_ || !partner_.date) return;
+  openDirectResult("💞 簡易相性", (pick)=>{
+    const data = pick.card[pick.orientation];
+    const partnerBazi = calcBazi(partner_.date);
+    const partnerElem = partnerBazi.dayElement;
+    const aToB = elementRelation(partnerElem, selfElem);
+    const bToA = elementRelation(selfElem, partnerElem);
+    const compatScore = (aToB.score + bToA.score) / 2;
+    const orientLabel = pick.orientation==='reversed' ? '逆位置' : '正位置';
+    return `
+      <div class="info-grid">
+        <div class="info-cell"><div class="k">あなたの日主</div><div class="v">${ELEMENT_EMOJI[selfElem]} ${selfElem}</div></div>
+        <div class="info-cell"><div class="k">${escapeHtml(partner_.name)}様の日主</div><div class="v">${ELEMENT_EMOJI[partnerElem]} ${partnerElem}</div></div>
+      </div>
+      <div class="daymaster-box">
+        <b>🀄 四柱推命の相性</b><br>
+        お相手があなたに与える影響：「${aToB.label}」<br>
+        あなたがお相手に与える影響：「${bToA.label}」<br><br>
+        相性スコア：${fmtScore(compatScore)}　${compatComment(compatScore)}
+      </div>
+      <div class="daymaster-box">
+        <b>🔮 タロットが示す今日の二人</b><br>
+        今日を象徴するカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）。${escapeHtml(data.text)}
+      </div>
+      <div>
+        <b>相性を良くするアドバイス</b><br>
+        ${escapeHtml(compatAdvice(compatScore))}<br>
+        『${escapeHtml(pick.card.name)}』が示す「${escapeHtml(data.advice)}」という視点も、二人の関係のヒントになりそうです。
+      </div>
+    `;
+  });
+});
+
+/* ===================== 🌟 真剣タロット占い（本格3枚引き） ===================== */
+CATEGORIES.forEach(c=>{
+  const opt = document.createElement("option");
+  opt.value = c.id; opt.textContent = c.label;
+  document.getElementById("tarotCategory").appendChild(opt);
+});
+attachMic(document.getElementById("tarotMicBtn"), document.getElementById("tarotWorry"), document.getElementById("tarotMicHint"));
+
+const chatEl = document.getElementById("tarotChat");
+function scrollChatToBottom(){
+  requestAnimationFrame(()=> window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"}));
+}
+function addUserMessage(text){
+  const div = document.createElement("div");
+  div.className = "msg user";
+  div.textContent = text;
+  chatEl.appendChild(div);
+  scrollChatToBottom();
+}
+function addBotHtmlInstant(html, speechText){
+  const div = document.createElement("div");
+  div.className = "msg bot";
+  const text = speechText !== undefined ? speechText : stripHtml(html);
+  const speakBtnHtml = SpeechSynthesisSupported ? `<button type="button" class="speak-btn" title="音声で聞く">🔊</button>` : "";
+  div.innerHTML = `<div class="who"><span>🔮 統合鑑定AI</span>${speakBtnHtml}</div>` + html;
+  chatEl.appendChild(div);
+  const btn = div.querySelector(".speak-btn");
+  if(btn) btn.addEventListener("click", ()=> speak(text));
+  scrollChatToBottom();
+  if(autoSpeakEnabled) speak(text);
+  return div;
+}
+async function addBotMessage(html, delay, speechText){
+  delay = delay===undefined ? 700 : delay;
+  const typing = document.createElement("div");
+  typing.className = "msg bot typing";
+  typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  chatEl.appendChild(typing);
+  scrollChatToBottom();
+  await wait(delay);
+  typing.remove();
+  return addBotHtmlInstant(html, speechText);
+}
+function waitForNext(labelText){
+  return new Promise(resolve=>{
+    const wrap = document.createElement("div");
+    wrap.className = "next-btn-wrap";
+    wrap.innerHTML = `<button type="button" class="next-step-btn">${escapeHtml(labelText || "次へ")} →</button>`;
+    chatEl.appendChild(wrap);
+    scrollChatToBottom();
+    wrap.querySelector(".next-step-btn").addEventListener("click", ()=>{
+      wrap.remove();
+      resolve();
+    }, {once:true});
+  });
+}
+
+function buildSpreadWidget(entries){
+  const wrap = document.createElement("div");
+  wrap.className = entries.length === 1 ? "spread" : "spread trio";
+  entries.forEach(entry=>{
+    const slot = document.createElement("div");
+    slot.className = "card-slot";
+    slot.innerHTML = `
+      <div class="pos-label">${escapeHtml(entry.label)}</div>
+      <div class="card-viewport">
+        <div class="card-inner">
+          <div class="card-face back"></div>
+          <div class="card-face front"><img alt=""></div>
+        </div>
+      </div>
+      <div class="card-name"></div>
+    `;
+    wrap.appendChild(slot);
+    entry.slot = slot;
+  });
+  return wrap;
+}
+function flipSlot(entry){
+  return new Promise(resolve=>{
+    if(entry.slot.classList.contains("flipped")){ resolve(); return; }
+    const img = entry.slot.querySelector(".card-face.front img");
+    img.src = cardFile(entry.card.id);
+    if(entry.orientation === "reversed"){
+      entry.slot.querySelector(".card-face.front").classList.add("reversed");
+    }
+    const orientLabel = entry.orientation === "reversed" ? "逆位置" : "正位置";
+    entry.slot.querySelector(".card-name").innerHTML =
+      escapeHtml(entry.card.name) + `<span class="orient-badge ${entry.orientation==='reversed'?'rev':'up'}">${orientLabel}</span>`;
+    entry.slot.classList.add("flipped");
+    setTimeout(resolve, 820);
+  });
+}
+function cardInterpretationHtml(card, orientation){
+  const data = card[orientation];
+  const orientLabel = orientation === "reversed" ? "逆位置" : "正位置";
+  const tags = data.keyword.split("・").map(k=>`<span class="card-tag">${escapeHtml(k)}</span>`).join("");
+  return `
+    <div class="card-title-line">『${escapeHtml(card.name)}』<span class="orient-badge ${orientation==='reversed'?'rev':'up'}">${orientLabel}</span><span class="score-chip">傾向値 ${fmtScore(data.score)}</span></div>
+    <div class="card-tags">${tags}</div>
+    <div>${escapeHtml(data.text)} ${escapeHtml(data.advice)}</div>
+  `;
+}
+function buildTarotNarrative(){
+  const past = drawn.past, present = drawn.present, future = drawn.future;
+  const pd = past.card[past.orientation], prd = present.card[present.orientation], fd = future.card[future.orientation];
+  const pOrient = past.orientation==='reversed' ? '逆位置' : '正位置';
+  const prOrient = present.orientation==='reversed' ? '逆位置' : '正位置';
+  const fOrient = future.orientation==='reversed' ? '逆位置' : '正位置';
+  const theme = currentCategory.theme;
+  return `
+    <div class="card-title-line">🔮 タロット総合リーディング：過去から未来への流れ</div>
+    <div>
+      <b>過去 ―『${escapeHtml(past.card.name)}』（${pOrient}）</b><br>
+      ${escapeHtml(pd.text)}<br>
+      これが、${escapeHtml(theme)}においてあなたがここまで歩んできた土台になっています。<br><br>
+      <b>現在 ―『${escapeHtml(present.card.name)}』（${prOrient}）</b><br>
+      ${escapeHtml(prd.text)}<br>
+      過去の流れを受けて、今まさにこの状況の只中にいます。<br><br>
+      <b>未来 ―『${escapeHtml(future.card.name)}』（${fOrient}）</b><br>
+      ${escapeHtml(fd.text)}<br>
+      このままの流れが続けば、この先にはこうした展開が待っていると考えられます。<br><br>
+      <b>ひとつながりの物語として見ると</b><br>
+      「${escapeHtml(pd.keyword.split("・")[0])}」だった過去から、「${escapeHtml(prd.keyword.split("・")[0])}」の現在を経て、「${escapeHtml(fd.keyword.split("・")[0])}」へと向かう流れが読み取れます。${escapeHtml(fd.advice)}
+    </div>
+  `;
+}
+
+let drawn = {}, flippedCount = 0, synthesisTriggered = false, currentCategory = null;
+
+function resetTarotScreen(){
+  document.getElementById("tarotIntroPanel").style.display = "block";
+  document.getElementById("tarotChat").style.display = "none";
+  document.getElementById("tarotFollowup").style.display = "none";
+  chatEl.innerHTML = "";
+  drawn = {};
+  flippedCount = 0;
+  synthesisTriggered = false;
+  document.getElementById("tarotCategory").value = "";
+  document.getElementById("tarotWorry").value = "";
+  document.getElementById("tarotSelfName").value = self_.name;
+  setDateValue("tarotSelfDate", self_.date);
+  document.getElementById("tarotSelfGender").value = self_.gender;
+  document.getElementById("tarotPartnerName").value = partner_ ? partner_.name : "";
+  setDateValue("tarotPartnerDate", (partner_ && partner_.date) ? partner_.date : "");
+  document.getElementById("tarotPartnerGender").value = partner_ ? (partner_.gender || "") : "";
+}
+document.getElementById("btnTarot").addEventListener("click", ()=>{
+  resetTarotScreen();
+  showScreen("tarotScreen");
+});
+document.getElementById("tarotBackBtn1").addEventListener("click", ()=>{
+  showScreen("hubScreen");
+});
+document.getElementById("tarotBackBtn2").addEventListener("click", ()=>{
+  if(SpeechSynthesisSupported) window.speechSynthesis.cancel();
+  showScreen("hubScreen");
+});
+document.getElementById("tarotPartnerClearBtn").addEventListener("click", ()=>{
+  document.getElementById("tarotPartnerName").value = "";
+  setDateValue("tarotPartnerDate", "");
+  document.getElementById("tarotPartnerGender").value = "";
+});
+
+document.getElementById("tarotStartBtn").addEventListener("click", async ()=>{
+  const categoryId = document.getElementById("tarotCategory").value;
+  if(!categoryId) return;
+  currentCategory = CATEGORIES.find(c=>c.id===categoryId);
+
+  const sName = document.getElementById("tarotSelfName").value.trim();
+  const sDate = getDateValue("tarotSelfDate");
+  const sGender = document.getElementById("tarotSelfGender").value;
+  if(!sName || !sDate || !sGender) return;
+  self_ = { name: sName, date: sDate, gender: sGender };
+  selfBazi = calcBazi(self_.date);
+  selfElem = selfBazi.dayElement;
+
+  const pName = document.getElementById("tarotPartnerName").value.trim();
+  const pDate = getDateValue("tarotPartnerDate");
+  const pGender = document.getElementById("tarotPartnerGender").value;
+  partner_ = (pDate) ? { name: pName || "お相手", date: pDate, gender: pGender } : (pName ? {name:pName, date:null, gender:pGender} : null);
+  syncCompatButton();
+
+  const worryText = document.getElementById("tarotWorry").value.trim();
+
+  document.getElementById("tarotIntroPanel").style.display = "none";
+  document.getElementById("tarotChat").style.display = "flex";
+
+  const profileLine = `【${currentCategory.label}】\n${self_.name}（${self_.date}）` + (partner_ ? `\nお相手：${partner_.name}` + (partner_.date ? `（${partner_.date}）` : "") : "") + (worryText ? `\n\n${worryText}` : "");
+  addUserMessage(profileLine);
+
+  await addBotMessage(
+    `ようこそ、${escapeHtml(self_.name)}様。今日は「${escapeHtml(currentCategory.label)}」について、タロット・四柱推命・バイオリズムの3つの視点を重ねて鑑定します。<br>まずは大アルカナ3枚——過去・現在・未来を引いていきましょう。`,
+    900
+  );
+  await addBotMessage("🔮 カードをタップすると、めくれます。まずは3枚とも開いてみましょう。", 700);
+
+  const picks = drawCards(3);
+  POS_ORDER.forEach((pos, i)=>{
+    drawn[pos] = { card: picks[i].card, orientation: picks[i].orientation };
+  });
+  const spreadEntries = POS_ORDER.map(pos=>({...drawn[pos], label: POS_LABEL[pos]}));
+  const spreadWidget = buildSpreadWidget(spreadEntries);
+  chatEl.appendChild(spreadWidget);
+  scrollChatToBottom();
+  spreadEntries.forEach((entry, i)=>{
+    const pos = POS_ORDER[i];
+    drawn[pos].slot = entry.slot;
+    entry.slot.addEventListener("click", ()=> onFlipPosition(pos, entry));
+  });
+});
+
+async function onFlipPosition(pos, entry){
+  if(entry.slot.classList.contains("flipped")) return;
+  await flipSlot(entry);
+  flippedCount++;
+  const intro = pos==="past" ? "【過去】" : pos==="present" ? "【現在】" : "【未来】";
+  await addBotMessage(`${intro}<br>` + cardInterpretationHtml(entry.card, entry.orientation), 500);
+
+  if(flippedCount === 3 && !synthesisTriggered){
+    synthesisTriggered = true;
+    await wait(300);
+    await addBotMessage(buildTarotNarrative(), 900);
+    await waitForNext("四柱推命の鑑定を見る");
+    await runBaziAndBiorhythmPhase();
+  }
+}
+
+async function runBaziAndBiorhythmPhase(){
+  const selfYearElem = GOGYO_BY_KAN[selfBazi.yearPillar.kanIdx];
+  const selfMonthElem = GOGYO_BY_KAN[selfBazi.monthPillar.kanIdx];
+  const yearRel = elementRelation(selfYearElem, selfElem);
+  const monthRel = elementRelation(selfMonthElem, selfElem);
+  const baziScore = (yearRel.score + monthRel.score) / 2;
+
+  const personalityIntroHtml = `
+    <div class="card-title-line">🀄 四柱推命鑑定：${escapeHtml(self_.name)}様の性格・才能</div>
+    <div class="pillar-row">
+      ${pillarHtml("年柱", selfBazi.yearPillar)}
+      ${pillarHtml("月柱", selfBazi.monthPillar)}
+      ${pillarHtml("日柱（日主）", selfBazi.dayPillar)}
+    </div>
+    ${personalityHtml(selfElem, selfYearElem, selfMonthElem, self_.name+"様")}
+    <div style="margin-top:8px;">※生まれた時刻の情報がないため、年柱・月柱・日柱の3本で鑑定しています（時柱は含みません）。</div>
+  `;
+  await addBotMessage(personalityIntroHtml, 900);
+
+  const fortuneHtml = `
+    <div class="card-title-line">🀄 今後の運勢</div>
+    <div class="daymaster-box">
+      <b>年運（今年全体の流れ）</b><br>
+      今年の年柱は${selfBazi.yearPillar.kan}${selfBazi.yearPillar.shi}（${ELEMENT_EMOJI[selfYearElem]} ${selfYearElem}）。あなたの日主（${selfElem}）との関係は「${yearRel.label}」。${fortuneComment(yearRel.score)}<br><br>
+      <b>月運（今月の流れ）</b><br>
+      今月の月柱は${selfBazi.monthPillar.kan}${selfBazi.monthPillar.shi}（${ELEMENT_EMOJI[selfMonthElem]} ${selfMonthElem}）。日主との関係は「${monthRel.label}」。${fortuneComment(monthRel.score)}<br><br>
+      これらを数値化すると <b>${fmtScore(baziScore)}</b> です。
+    </div>
+  `;
+  await addBotMessage(fortuneHtml, 800);
+
+  let compatScore = null, partnerElem = null;
+  if(currentCategory.isRelationship && partner_ && partner_.date){
+    const partnerBazi = calcBazi(partner_.date);
+    partnerElem = partnerBazi.dayElement;
+    const partnerYearElem = GOGYO_BY_KAN[partnerBazi.yearPillar.kanIdx];
+    const partnerMonthElem = GOGYO_BY_KAN[partnerBazi.monthPillar.kanIdx];
+
+    const partnerPersonalityHtml = `
+      <div class="card-title-line">🀄 ${escapeHtml(partner_.name)}様の性格・才能（四柱推命）</div>
+      <div class="pillar-row">
+        ${pillarHtml("年柱", partnerBazi.yearPillar)}
+        ${pillarHtml("月柱", partnerBazi.monthPillar)}
+        ${pillarHtml("日柱（日主）", partnerBazi.dayPillar)}
+      </div>
+      ${personalityHtml(partnerElem, partnerYearElem, partnerMonthElem, partner_.name+"様")}
+    `;
+    await addBotMessage(partnerPersonalityHtml, 800);
+
+    const aToB = elementRelation(partnerElem, selfElem);
+    const bToA = elementRelation(selfElem, partnerElem);
+    compatScore = (aToB.score + bToA.score) / 2;
+    const compatHtml = `
+      <div class="card-title-line">💞 相性診断（四柱推命）</div>
+      <div class="info-grid">
+        <div class="info-cell"><div class="k">あなたの日主</div><div class="v">${ELEMENT_EMOJI[selfElem]} ${selfElem}</div></div>
+        <div class="info-cell"><div class="k">${escapeHtml(partner_.name)}様の日主</div><div class="v">${ELEMENT_EMOJI[partnerElem]} ${partnerElem}</div></div>
+      </div>
+      <div class="daymaster-box">
+        お相手（${partnerElem}）があなた（${selfElem}）に与える影響：「${aToB.label}」<br>
+        あなた（${selfElem}）がお相手（${partnerElem}）に与える影響：「${bToA.label}」<br><br>
+        相性を数値化すると <b>${fmtScore(compatScore)}</b> です。${compatComment(compatScore)}
+      </div>
+    `;
+    await addBotMessage(compatHtml, 800);
+  } else if(currentCategory.isRelationship && (!partner_ || !partner_.date)){
+    await addBotMessage(`💞 相性診断について：お相手の生年月日が未入力のため、四柱推命による相性診断は省略します。タロット・四柱推命（あなた自身）・バイオリズムの3つで総合鑑定します。`, 500);
+  }
+
+  await waitForNext("バイオリズムの鑑定を見る");
+
+  const selfBio = calcBiorhythm(self_.date);
+  const biorhythmScore = biorhythmScoreOf(selfBio);
+  const bioHtml = `
+    <div class="card-title-line">🌀 バイオリズム鑑定</div>
+    ${bioRowHtml("身体", selfBio.physicalPct, selfBio.physicalTrend)}
+    ${bioRowHtml("感情", selfBio.emotionalPct, selfBio.emotionalTrend)}
+    ${bioRowHtml("知性", selfBio.intellectualPct, selfBio.intellectualTrend)}
+    <div>生まれてから今日で${selfBio.days.toLocaleString()}日目。3周期の波を合成したスコアは <b>${fmtScore(biorhythmScore)}</b> です。${biorhythmComment(biorhythmScore)}</div>
+  `;
+  await addBotMessage(bioHtml, 800);
+
+  await waitForNext("総合鑑定を見る");
+
+  await showSynthesis(baziScore, biorhythmScore, compatScore, {yearRel, monthRel, selfElem, partnerElem, selfBazi, selfBio});
+}
+
+function computeTarotScore(){
+  const w = {past:0.2, present:0.3, future:0.5};
+  let total = 0;
+  POS_ORDER.forEach(pos=>{
+    const e = drawn[pos];
+    total += e.card[e.orientation].score * w[pos];
+  });
+  return total;
+}
+
+async function showSynthesis(baziScore, biorhythmScore, compatScore, extra){
+  const past = drawn.past, present = drawn.present, future = drawn.future;
+  const pastKw = past.card[past.orientation].keyword.split("・")[0];
+  const presentKw = present.card[present.orientation].keyword.split("・")[0];
+  const futureKw = future.card[future.orientation].keyword.split("・")[0];
+  const futureAdvice = future.card[future.orientation].advice;
+  const theme = currentCategory.theme;
+  const tarotScore = computeTarotScore();
+
+  let total = tarotScore + baziScore + biorhythmScore;
+  if(compatScore !== null) total += compatScore;
+
+  const magnitude = Math.abs(total);
+  const chosenOption = total >= 0 ? currentCategory.optionA : currentCategory.optionB;
+  let confLabel;
+  if(magnitude >= 2.6) confLabel = total>=0 ? "3つの視点すべてが揃って後押ししています。強くおすすめします。" : "3つの視点すべてが慎重さを示しています。今は見送るのが賢明です。";
+  else if(magnitude >= 1.2) confLabel = total>=0 ? "全体として後押しされている状況です。" : "全体として慎重になるべきタイミングです。";
+  else confLabel = total>=0 ? "小さな追い風はありますが、他の要素とバランスを取りながら進みましょう。" : "無理に動かず、流れを見ながら判断するのが得策です。";
+
+  let rows = "";
+  rows += `<tr><td class="method">🔮 タロット</td><td>過去『${escapeHtml(past.card.name)}』・現在『${escapeHtml(present.card.name)}』・未来『${escapeHtml(future.card.name)}』の傾向を加重平均</td><td class="val ${tarotScore>=0?'pos':'neg'}">${fmtScore(tarotScore)}</td></tr>`;
+  rows += `<tr><td class="method">🀄 四柱推命</td><td>日主（${extra.selfElem}）と年柱・月柱の関係</td><td class="val ${baziScore>=0?'pos':'neg'}">${fmtScore(baziScore)}</td></tr>`;
+  rows += `<tr><td class="method">🌀 バイオリズム</td><td>身体・感情・知性、3周期の合成波</td><td class="val ${biorhythmScore>=0?'pos':'neg'}">${fmtScore(biorhythmScore)}</td></tr>`;
+  if(compatScore !== null){
+    rows += `<tr><td class="method">💞 相性</td><td>お相手との五行の関係</td><td class="val ${compatScore>=0?'pos':'neg'}">${fmtScore(compatScore)}</td></tr>`;
+  }
+
+  const maxAbs = 8;
+  const markerPct = Math.max(0, Math.min(100, ((total + maxAbs) / (maxAbs*2)) * 100));
+
+  const selfTraitShort = GOGYO_PERSONALITY[extra.selfElem].base.split("。")[0] + "。";
+  let recapHtml = `
+    <div><b>🔮 タロットの視点</b><br>
+      過去「${escapeHtml(pastKw)}」→現在「${escapeHtml(presentKw)}」→未来「${escapeHtml(futureKw)}」という流れが見えました。全体の傾向は${scoreQualitative(tarotScore)}です。
+    </div>
+    <div style="margin-top:10px;"><b>🀄 四柱推命の視点</b><br>
+      あなたは${ELEMENT_EMOJI[extra.selfElem]}${extra.selfElem}タイプ——${selfTraitShort} 生まれ持った性格・才能に加え、今の年運・月運は${scoreQualitative(baziScore)}です。
+    </div>
+    <div style="margin-top:10px;"><b>🌀 バイオリズムの視点</b><br>
+      心身のコンディションは${scoreQualitative(biorhythmScore)}です。
+    </div>
+  `;
+  if(compatScore !== null && extra.partnerElem){
+    recapHtml += `
+    <div style="margin-top:10px;"><b>💞 相性の視点</b><br>
+      ${ELEMENT_EMOJI[extra.partnerElem]}${extra.partnerElem}タイプのお相手との関係は${scoreQualitative(compatScore)}です。
+    </div>`;
+  }
+
+  const html = `
+    <div class="card-title-line">✦ 総合鑑定：判断の根拠</div>
+    <div>タロット・四柱推命・バイオリズム、それぞれの視点をまとめると次のとおりです。</div>
+    ${recapHtml}
+    <table class="score-table">
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="gauge-wrap">
+      <div class="gauge-track"><div class="gauge-marker" style="left:${markerPct}%;"></div></div>
+      <div class="gauge-caption"><span>見送るべき</span><span>合計スコア ${fmtScore(total)}</span><span>進むべき</span></div>
+    </div>
+    <div class="conclusion-box">
+      <div class="label">${escapeHtml(currentCategory.label)}についての結論</div>
+      <div class="choice">「${escapeHtml(chosenOption)}」ことをおすすめします。</div>
+      <div class="conf">${escapeHtml(confLabel)}</div>
+    </div>
+    <div style="margin-top:12px;">
+      タロットが示す流れ、四柱推命が示す生まれ持った性格と今の巡り合わせ、バイオリズムが示す心身のコンディション——この3つが一致するときほど、答えは確かなものになります。${escapeHtml(futureAdvice)}
+    </div>
+  `;
+  const speechText = `${theme}についての総合鑑定です。タロットのスコアは${fmtScore(tarotScore)}、四柱推命のスコアは${fmtScore(baziScore)}、バイオリズムのスコアは${fmtScore(biorhythmScore)}でした。合計スコアは${fmtScore(total)}。結論として、${chosenOption}ことをおすすめします。${confLabel}`;
+
+  await addBotMessage(html, 1100, speechText);
+
+  const followup = document.getElementById("tarotFollowup");
+  followup.style.display = "block";
+  followup.style.opacity = 0;
+  requestAnimationFrame(()=>{
+    followup.style.transition = "opacity .6s ease";
+    followup.style.opacity = 1;
+  });
+  scrollChatToBottom();
+}
+</script>
+</body>
+</html>
