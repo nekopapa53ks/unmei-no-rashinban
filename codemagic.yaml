@@ -6,9 +6,6 @@ workflows:
     integrations:
       app_store_connect: codemagic
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.tokiyomi.unmeinorashinban
       vars:
         BUNDLE_ID: "com.tokiyomi.unmeinorashinban"
         XCODE_PROJECT: "App.xcodeproj"
