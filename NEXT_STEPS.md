@@ -19,13 +19,14 @@ AdMob（バナー + リワード広告）はコード側の実装済みです。
 - ここに端末を登録しないまま、本番の広告ユニットIDのまま自分で広告をタップ・クリックすると、
   **無効なトラフィックとみなされAdMobアカウントが停止するリスクがあります**。テスト時は必ず端末登録を先に行ってください。
 
-## ③ Macがないので、クラウドビルドサービスでビルドする
-おすすめは **Codemagic**（Capacitor/iOSに対応、無料枠あり）
-1. ~~このプロジェクトを GitHub 等のリポジトリにpushする~~ ✅ 完了（`https://github.com/nekopapa53ks/unmei-no-rashinban`）
-2. https://codemagic.io/ でアカウント作成（未着手）
-3. Codemagic側で「Capacitor」テンプレートを選び、iOSビルドを設定
-4. Apple Developer のチーム情報（チームID `AN856756JR`）・証明書（Codemagicが自動生成も可能）を連携
-5. TestFlight配信→動作確認→App Store提出、の順で進める
+## ③ Macがないので、クラウドビルドサービスでビルドする ✅ 完了（2026-09-22 初回ビルド成功）
+**Codemagic**（`unmei-no-rashinban`アプリ、ワークフロー`ios-release`）でビルド・署名・TestFlight自動提出まで動作確認済み。
+- リポジトリ: `https://github.com/nekopapa53ks/unmei-no-rashinban`
+- 設定ファイル: `codemagic.yaml`（App Store Connect統合名`codemagic`、環境変数グループ`signing`に`CERTIFICATE_PRIVATE_KEY_B64`を保存）
+- 署名は自動発行方式（`app-store-connect fetch-signing-files --create`）。証明書の秘密鍵はBase64エンコードしてCodemagicの環境変数に保存し、ビルド時にデコードしてファイル化してから使用している（Codemagicの変数入力欄に生PEMを貼ると改行が壊れるため）
+- 次回以降、`main`ブランチにpushすると自動でビルド＆TestFlight提出される設定（`triggering.events: push`）
+
+**次にやること**: App Store ConnectのTestFlightタブでビルドが処理完了（プロセッシング）するのを待ち、テスターとして自分を追加してTestFlightアプリで実機インストール・動作確認する。
 
 ## ④ ビルド前にやっておくこと
 - アプリアイコン・スプラッシュ画面の用意（現状はCapacitorのデフォルトのまま）
