@@ -10,7 +10,7 @@ workflows:
         BUNDLE_ID: "com.tokiyomi.unmeinorashinban"
         XCODE_PROJECT: "App.xcodeproj"
         XCODE_SCHEME: "App"
-      node: 20
+      node: 22
       xcode: latest
     triggering:
       events:
