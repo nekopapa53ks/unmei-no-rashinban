@@ -606,10 +606,6 @@
 
       <div class="form-section">
         <h3>あなたの情報 <span class="req-badge">必須・変更可</span></h3>
-        <div class="field">
-          <label for="tarotSelfName">お名前（ニックネーム可）</label>
-          <input type="text" id="tarotSelfName" maxlength="30" required placeholder="例：山田 花子">
-        </div>
         <div class="grid2">
           <div class="field">
             <label>生年月日</label>
@@ -1907,6 +1903,19 @@ function waitForNext(labelText){
     }, {once:true});
   });
 }
+function waitForNextWithAd(labelText){
+  return new Promise(resolve=>{
+    const wrap = document.createElement("div");
+    wrap.className = "next-btn-wrap";
+    wrap.innerHTML = `<button type="button" class="next-step-btn">${escapeHtml(labelText || "次へ")} →</button>`;
+    chatEl.appendChild(wrap);
+    scrollChatToBottom();
+    wrap.querySelector(".next-step-btn").addEventListener("click", ()=>{
+      wrap.remove();
+      showRewardedAndThen(resolve);
+    }, {once:true});
+  });
+}
 
 function buildSpreadWidget(entries){
   const wrap = document.createElement("div");
@@ -1991,7 +2000,6 @@ function resetTarotScreen(){
   synthesisTriggered = false;
   document.getElementById("tarotCategory").value = "";
   document.getElementById("tarotWorry").value = "";
-  document.getElementById("tarotSelfName").value = self_.name;
   setDateValue("tarotSelfDate", self_.date);
   document.getElementById("tarotSelfGender").value = self_.gender;
   document.getElementById("tarotPartnerName").value = partner_ ? partner_.name : "";
@@ -2020,11 +2028,10 @@ document.getElementById("tarotStartBtn").addEventListener("click", async ()=>{
   if(!categoryId) return;
   currentCategory = CATEGORIES.find(c=>c.id===categoryId);
 
-  const sName = document.getElementById("tarotSelfName").value.trim();
   const sDate = getDateValue("tarotSelfDate");
   const sGender = document.getElementById("tarotSelfGender").value;
-  if(!sName || !sDate || !sGender) return;
-  self_ = { name: sName, date: sDate, gender: sGender };
+  if(!sDate || !sGender) return;
+  self_ = { name: self_.name || "あなた", date: sDate, gender: sGender };
   selfBazi = calcBazi(self_.date);
   selfElem = selfBazi.dayElement;
 
@@ -2073,6 +2080,7 @@ async function onFlipPosition(pos, entry){
   if(flippedCount === 3 && !synthesisTriggered){
     synthesisTriggered = true;
     await wait(300);
+    await waitForNextWithAd("タロット鑑定結果を見る");
     await addBotMessage(buildTarotNarrative(), 900);
     await waitForNext("四柱推命の鑑定を見る");
     await runBaziAndBiorhythmPhase();
@@ -2161,7 +2169,7 @@ async function runBaziAndBiorhythmPhase(){
   `;
   await addBotMessage(bioHtml, 800);
 
-  await waitForNext("総合鑑定を見る");
+  await waitForNextWithAd("総合鑑定を見る");
 
   await showSynthesis(baziScore, biorhythmScore, compatScore, {yearRel, monthRel, selfElem, partnerElem, selfBazi, selfBio});
 }
