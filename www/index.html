@@ -87,7 +87,21 @@
   .field{margin-bottom:16px;}
   .field:last-child{margin-bottom:0;}
   label{display:block;font-size:.76rem;color:#6c6188;margin-bottom:7px;font-weight:700;letter-spacing:.02em;}
-  input[type=text], input[type=date], select, textarea{
+  input[type=text], textarea{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    padding:10px 12px;
+    border:1.5px solid #ddd3f2;
+    border-radius:10px;
+    font-size:16px;
+    background:#fff;
+    color:var(--ink);
+    font-family:inherit;
+    resize:vertical;
+    box-sizing:border-box;
+  }
+  select{
     width:100%;
     max-width:100%;
     min-width:0;
@@ -98,7 +112,6 @@
     background:#fff;
     color:var(--ink);
     font-family:inherit;
-    resize:vertical;
     box-sizing:border-box;
   }
   input:focus, select:focus, textarea:focus{outline:2px solid var(--violet);border-color:var(--violet);}
@@ -451,10 +464,6 @@
       <form id="setupForm">
         <div class="form-section">
           <h3>① あなたの情報 <span class="req-badge">必須</span></h3>
-          <div class="field">
-            <label for="selfName">お名前（ニックネーム可）</label>
-            <input type="text" id="selfName" maxlength="30" required placeholder="例：山田 花子">
-          </div>
           <div class="grid2">
             <div class="field">
               <label>生年月日</label>
@@ -719,6 +728,7 @@ async function prepareRewardedAd(){
   try{
     await AdMobPlugin.prepareRewardVideoAd({ adId: ADMOB_IDS.rewarded });
     rewardedAdReady = true;
+    console.log("[AdMob] リワード広告の準備ができました");
   }catch(e){
     rewardedAdReady = false;
     console.warn("[AdMob] リワード広告の準備に失敗しました", e);
@@ -726,18 +736,24 @@ async function prepareRewardedAd(){
 }
 
 async function initAds(){
-  if(!AdMobPlugin) return;
+  if(!AdMobPlugin){
+    console.log("[AdMob] ネイティブ環境ではないため広告は初期化しません");
+    return;
+  }
   try{
+    console.log("[AdMob] 初期化を開始します");
     await AdMobPlugin.initialize({
       requestTrackingAuthorization: true,
       testingDevices: ADMOB_TEST_DEVICES,
     });
+    console.log("[AdMob] 初期化に成功しました。バナーを表示します");
     await AdMobPlugin.showBanner({
       adId: ADMOB_IDS.banner,
       adSize: "BANNER",
       position: "BOTTOM_CENTER",
       margin: 0,
     });
+    console.log("[AdMob] バナー表示のリクエストに成功しました");
     await prepareRewardedAd();
   }catch(e){
     console.warn("[AdMob] 初期化に失敗しました", e);
@@ -769,7 +785,7 @@ function showRewardedAndThen(onGranted){
     });
 }
 
-document.addEventListener("DOMContentLoaded", initAds);
+document.addEventListener("DOMContentLoaded", ()=> setTimeout(initAds, 800));
 
 /* ===================== タロットデータ ===================== */
 const CARDS = [
@@ -1504,7 +1520,7 @@ function syncCompatButton(){
 document.getElementById("setupForm").addEventListener("submit", (e)=>{
   e.preventDefault();
   self_ = {
-    name: document.getElementById("selfName").value.trim() || "あなた",
+    name: "あなた",
     date: getDateValue("selfDate"),
     gender: document.getElementById("selfGender").value,
   };
@@ -1575,21 +1591,30 @@ function drawAndReveal(contentBuilderFn){
 
     setTimeout(()=>{
       tapHint.style.display = "none";
-      const html = contentBuilderFn(pick);
-      const speakBtnHtml = SpeechSynthesisSupported ? `<div class="speak-row"><button type="button" class="speak-btn" id="resultSpeakBtn" title="音声で聞く">🔊</button></div>` : "";
-      const retryLabel = AdMobPlugin ? "🎬 広告を見てもう1回占う" : "🔄 もう1回占う";
-      const retryBtnHtml = `<button type="button" class="ghost" id="retryDrawBtn">${retryLabel}</button>`;
-      contentEl.innerHTML = speakBtnHtml + html + retryBtnHtml;
+      const revealBtnHtml = `<button type="button" class="primary" id="revealResultBtn">結果を見る</button>`;
+      contentEl.innerHTML = revealBtnHtml;
       contentEl.style.display = "block";
-      const btn = document.getElementById("resultSpeakBtn");
-      if(btn) btn.addEventListener("click", ()=> speak(stripHtml(html)));
-      document.getElementById("retryDrawBtn").addEventListener("click", ()=>{
-        showRewardedAndThen(()=> drawAndReveal(contentBuilderFn));
+      document.getElementById("revealResultBtn").addEventListener("click", ()=>{
+        showRewardedAndThen(()=> revealResultContent(pick, contentBuilderFn, contentEl));
       });
-      if(autoSpeakEnabled) speak(stripHtml(html));
       window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
     }, 820);
   });
+}
+
+function revealResultContent(pick, contentBuilderFn, contentEl){
+  const html = contentBuilderFn(pick);
+  const speakBtnHtml = SpeechSynthesisSupported ? `<div class="speak-row"><button type="button" class="speak-btn" id="resultSpeakBtn" title="音声で聞く">🔊</button></div>` : "";
+  const retryBtnHtml = `<button type="button" class="ghost" id="retryDrawBtn">🔄 もう1回占う</button>`;
+  contentEl.innerHTML = speakBtnHtml + html + retryBtnHtml;
+  contentEl.style.display = "block";
+  const btn = document.getElementById("resultSpeakBtn");
+  if(btn) btn.addEventListener("click", ()=> speak(stripHtml(html)));
+  document.getElementById("retryDrawBtn").addEventListener("click", ()=>{
+    drawAndReveal(contentBuilderFn);
+  });
+  if(autoSpeakEnabled) speak(stripHtml(html));
+  window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
 }
 
 function openDirectResult(title, contentBuilderFn){
