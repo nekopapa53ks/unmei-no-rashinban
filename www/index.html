@@ -491,10 +491,6 @@
             <button type="button" class="link-toggle" id="partnerToggle">＋ 追加する</button>
           </div>
           <div id="partnerFields" style="display:none;">
-            <div class="field">
-              <label for="partnerName">お相手のお名前</label>
-              <input type="text" id="partnerName" maxlength="30" placeholder="例：鈴木 太郎">
-            </div>
             <div class="grid2">
               <div class="field">
                 <label>お相手の生年月日（わかる範囲で）</label>
@@ -632,10 +628,6 @@
         <div class="section-header-row">
           <h3>お相手の情報 <span class="opt-badge">任意・変更可</span></h3>
           <button type="button" class="link-toggle" id="tarotPartnerClearBtn">－ 削除</button>
-        </div>
-        <div class="field">
-          <label for="tarotPartnerName">お相手のお名前</label>
-          <input type="text" id="tarotPartnerName" maxlength="30" placeholder="例：鈴木 太郎">
         </div>
         <div class="grid2">
           <div class="field">
@@ -1520,10 +1512,9 @@ document.getElementById("setupForm").addEventListener("submit", (e)=>{
     date: getDateValue("selfDate"),
     gender: document.getElementById("selfGender").value,
   };
-  const pName = document.getElementById("partnerName").value.trim();
   const pDate = getDateValue("partnerDate");
   const pGender = document.getElementById("partnerGender").value;
-  partner_ = (pDate) ? { name: pName || "お相手", date: pDate, gender: pGender } : (pName ? {name:pName, date:null, gender:pGender} : null);
+  partner_ = pDate ? { name: "お相手", date: pDate, gender: pGender } : null;
 
   selfBazi = calcBazi(self_.date);
   selfElem = selfBazi.dayElement;
@@ -2002,7 +1993,6 @@ function resetTarotScreen(){
   document.getElementById("tarotWorry").value = "";
   setDateValue("tarotSelfDate", self_.date);
   document.getElementById("tarotSelfGender").value = self_.gender;
-  document.getElementById("tarotPartnerName").value = partner_ ? partner_.name : "";
   setDateValue("tarotPartnerDate", (partner_ && partner_.date) ? partner_.date : "");
   document.getElementById("tarotPartnerGender").value = partner_ ? (partner_.gender || "") : "";
 }
@@ -2018,7 +2008,6 @@ document.getElementById("tarotBackBtn2").addEventListener("click", ()=>{
   showScreen("hubScreen");
 });
 document.getElementById("tarotPartnerClearBtn").addEventListener("click", ()=>{
-  document.getElementById("tarotPartnerName").value = "";
   setDateValue("tarotPartnerDate", "");
   document.getElementById("tarotPartnerGender").value = "";
 });
@@ -2035,10 +2024,9 @@ document.getElementById("tarotStartBtn").addEventListener("click", async ()=>{
   selfBazi = calcBazi(self_.date);
   selfElem = selfBazi.dayElement;
 
-  const pName = document.getElementById("tarotPartnerName").value.trim();
   const pDate = getDateValue("tarotPartnerDate");
   const pGender = document.getElementById("tarotPartnerGender").value;
-  partner_ = (pDate) ? { name: pName || "お相手", date: pDate, gender: pGender } : (pName ? {name:pName, date:null, gender:pGender} : null);
+  partner_ = pDate ? { name: "お相手", date: pDate, gender: pGender } : null;
   syncCompatButton();
 
   const worryText = document.getElementById("tarotWorry").value.trim();
