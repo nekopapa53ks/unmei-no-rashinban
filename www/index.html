@@ -1672,12 +1672,14 @@ document.getElementById("btnOmikuji").addEventListener("click", ()=>{
   openDirectResult("🎋 開運おみくじ", (pick)=>{
     const tier = omikujiLevel(pick.card, pick.orientation);
     const detail = OMIKUJI_DETAIL[tier];
-    const orientLabel = pick.orientation === "reversed" ? "逆位置" : "正位置";
+    const todayPillar = calcDayPillar(new Date());
+    const todayElem = GOGYO_BY_KAN[todayPillar.kanIdx];
+    const rel = elementRelation(todayElem, selfElem);
     const rows = Object.keys(detail).map(k=>
       `<div class="omikuji-cell"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(detail[k])}</div></div>`
     ).join("");
     return `
-      <div style="text-align:center;font-size:.8rem;color:var(--sub);">引いたカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）</div>
+      <div>${baziTarotIntroHtml(pick, todayElem, rel)}</div>
       <div class="omikuji-tier">${escapeHtml(tier)}</div>
       <div class="omikuji-grid">${rows}</div>
       <div class="daymaster-box">🎋 ${escapeHtml(OMIKUJI_ADVICE[tier])}</div>
