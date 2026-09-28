@@ -678,6 +678,7 @@
     <div class="chat" id="tarotChat" style="display:none;"></div>
 
     <div id="tarotFollowup" style="display:none;">
+      <button type="button" class="ghost" id="tarotRetryBtn">🔄 もう1回占う</button>
       <button type="button" class="ghost" id="tarotBackBtn2">占いメニューに戻る</button>
     </div>
   </section>
@@ -1538,11 +1539,12 @@ document.getElementById("backToSetupBtn").addEventListener("click", ()=>{
 });
 
 /* ===================== 四柱推命×タロットの共通イントロ（各結果に共通で使用） ===================== */
-function baziTarotIntroHtml(pick, todayElem, rel){
+function baziTarotIntroHtml(pick, todayElem, rel, dayLabel){
   const data = pick.card[pick.orientation];
   const orientLabel = pick.orientation==='reversed' ? '逆位置' : '正位置';
+  dayLabel = dayLabel || "今日";
   return `
-    <b>🀄 四柱推命</b>：今日は${ELEMENT_EMOJI[todayElem]}${todayElem}の日。あなたの日主（${ELEMENT_EMOJI[selfElem]}${selfElem}）との関係は「${rel.label}」。${fortuneComment(rel.score)}<br><br>
+    <b>🀄 四柱推命</b>：${escapeHtml(dayLabel)}は${ELEMENT_EMOJI[todayElem]}${todayElem}の日。あなたの日主（${ELEMENT_EMOJI[selfElem]}${selfElem}）との関係は「${rel.label}」。${fortuneComment(rel.score)}<br><br>
     <b>🔮 タロット</b>：引いたカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）。${escapeHtml(data.text)}
   `;
 }
@@ -1796,20 +1798,17 @@ document.getElementById("eventGoBtn").addEventListener("click", ()=>{
   document.getElementById("resultTitle").textContent = `🎉 ${eventInfo.label}の開運（${eventDate}）`;
 
   drawAndReveal((pick)=>{
-    const data = pick.card[pick.orientation];
     const d = new Date(eventDate + "T00:00:00");
     const pillar = calcDayPillar(d);
     const elem = GOGYO_BY_KAN[pillar.kanIdx];
     const rel = elementRelation(elem, selfElem);
     const bio = calcBiorhythm(self_.date, eventDate);
     const bioScore = biorhythmScoreOf(bio);
-    const orientLabel = pick.orientation==='reversed' ? '逆位置' : '正位置';
     return `
-      <div>
-        当日は${ELEMENT_EMOJI[elem]}${elem}の日。あなたの日主との関係は「${rel.label}」。${fortuneComment(rel.score)}<br><br>
-        ${escapeHtml(eventInfo.flavor)}<br><br>
-        引いたカードは『${escapeHtml(pick.card.name)}』（${orientLabel}）。${escapeHtml(data.text)} ${escapeHtml(data.advice)}<br><br>
-        当日のコンディションは${scoreQualitative(bioScore)}です。${biorhythmComment(bioScore)}
+      <div>${baziTarotIntroHtml(pick, elem, rel, "当日")}</div>
+      <div class="daymaster-box">
+        <b>${escapeHtml(eventInfo.label)}へのひとこと</b><br>${escapeHtml(eventInfo.flavor)}<br><br>
+        <b>当日のコンディション</b><br>${scoreQualitative(bioScore)}です。${biorhythmComment(bioScore)}
       </div>
     `;
   });
@@ -2055,6 +2054,13 @@ document.getElementById("tarotStartBtn").addEventListener("click", async ()=>{
   );
   await addBotMessage("🔮 カードをタップすると、めくれます。まずは3枚とも開いてみましょう。", 700);
 
+  startTarotSpread();
+});
+
+function startTarotSpread(){
+  drawn = {};
+  flippedCount = 0;
+  synthesisTriggered = false;
   const picks = drawCards(3);
   POS_ORDER.forEach((pos, i)=>{
     drawn[pos] = { card: picks[i].card, orientation: picks[i].orientation };
@@ -2068,6 +2074,12 @@ document.getElementById("tarotStartBtn").addEventListener("click", async ()=>{
     drawn[pos].slot = entry.slot;
     entry.slot.addEventListener("click", ()=> onFlipPosition(pos, entry));
   });
+}
+
+document.getElementById("tarotRetryBtn").addEventListener("click", async ()=>{
+  document.getElementById("tarotFollowup").style.display = "none";
+  await addBotMessage("🔄 もう一度、過去・現在・未来の3枚を引いてみましょう。", 500);
+  startTarotSpread();
 });
 
 async function onFlipPosition(pos, entry){
