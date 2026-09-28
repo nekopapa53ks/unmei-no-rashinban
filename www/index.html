@@ -697,14 +697,24 @@
 const IS_NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 const AdMobPlugin = (IS_NATIVE && window.Capacitor.Plugins && window.Capacitor.Plugins.AdMob) ? window.Capacitor.Plugins.AdMob : null;
 
+// ⚠️ 動作確認用フラグ：true の間はGoogle公式のテスト広告ID（審査状況に関わらず必ず表示される）を使う。
+//    実装が正しく広告を呼び出せているかを確認したら、正式リリース前に必ず false に戻すこと。
+const ADMOB_USE_TEST_ADS = true;
+
 // 本番の広告ユニットID（AdMobコンソールで発行済み）。
 // ⚠️ 自分の端末でテストする際は、下のtestingDevicesに端末IDを必ず追加してください。
 //    （登録した端末にはテスト広告が表示されるため安全にタップ確認できます）
 //    未登録の端末で本番IDの広告を自分でクリックすると、無効なトラフィックとしてAdMobアカウント停止のリスクがあります。
-const ADMOB_IDS = {
+const ADMOB_PRODUCTION_IDS = {
   banner: "ca-app-pub-1027443362095260/5266693523",
   rewarded: "ca-app-pub-1027443362095260/1036251582",
 };
+// Google公式のサンプルテスト広告ID（iOS用）。審査中のアプリでも常に表示される。
+const ADMOB_TEST_IDS = {
+  banner: "ca-app-pub-3940256099942544/2934735716",
+  rewarded: "ca-app-pub-3940256099942544/1712485313",
+};
+const ADMOB_IDS = ADMOB_USE_TEST_ADS ? ADMOB_TEST_IDS : ADMOB_PRODUCTION_IDS;
 // 自分のテスト端末のデバイスIDをここに追加（初回起動時にXcodeのコンソールログに
 // 「To get test ads on this device...」という案内とIDが表示されます）
 const ADMOB_TEST_DEVICES = [];
@@ -729,7 +739,7 @@ async function initAds(){
     return;
   }
   try{
-    console.log("[AdMob] 初期化を開始します");
+    console.log("[AdMob] 初期化を開始します（テスト広告モード: " + ADMOB_USE_TEST_ADS + "）");
     await AdMobPlugin.initialize({
       requestTrackingAuthorization: true,
       testingDevices: ADMOB_TEST_DEVICES,
