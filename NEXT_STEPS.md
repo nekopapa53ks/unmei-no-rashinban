@@ -34,9 +34,10 @@ AdMobの審査中は広告配信が制限されていて実機で全く広告が
 **本番の広告ユニットIDに戻すには、`ADMOB_USE_TEST_ADS` を `false` に書き換えてから `npx cap sync ios` → コミット→pushすること。この作業を忘れたままApp Storeに提出しないよう注意。**
 
 ## ④ ビルド前にやっておくこと
-- アプリアイコン・スプラッシュ画面の用意（現状はCapacitorのデフォルトのまま）
-- スクリーンショット・アプリ説明文（App Store掲載用）
-- プライバシーポリシーページ（広告・トラッキングを使うため必須。AdMob使用時はApp Storeの審査で必ず確認されます）
+- アプリアイコン・スプラッシュ画面の用意 ✅ 完了（2026-09-30、羅針盤モチーフのブランドデザインに差し替え済み）
+- スクリーンショット・アプリ説明文（App Store掲載用）— 未着手
+- プライバシーポリシーページ ✅ 完了（`privacy-policy.html`、GitHub Pagesで公開中: `https://nekopapa53ks.github.io/unmei-no-rashinban/privacy-policy.html`、App Store ConnectのApp情報にも登録済み）
+- App Store Connectの「アプリのプライバシー」データ収集アンケート（AdMobの広告識別子収集について）— 未回答
 
 ## 今後コードを変更したとき
 `www/index.html` を編集したら、下記でネイティブ側に反映してから再ビルドしてください。
