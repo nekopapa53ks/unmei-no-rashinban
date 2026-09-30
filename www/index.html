@@ -181,6 +181,39 @@
   .screen{display:none;}
   .screen.active{display:block;}
 
+  /* ===== opening ===== */
+  #openingScreen{transition:opacity .6s ease;}
+  #openingScreen.fade-out{opacity:0;}
+  .opening-orb{
+    font-size:2.6rem;
+    margin:6px 0 10px;
+    filter:drop-shadow(0 0 18px rgba(205,168,94,.55));
+    animation:orb-float 4s ease-in-out infinite;
+  }
+  @keyframes orb-float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+  }
+  .opening-panel{text-align:center;}
+  .opening-copy{
+    font-size:.82rem;
+    line-height:2;
+    color:#6c6188;
+    margin:0 0 18px;
+  }
+  .opening-free{
+    display:inline-block;
+    background:rgba(138,95,214,.1);
+    border:1px solid rgba(138,95,214,.3);
+    border-radius:999px;
+    padding:5px 16px;
+    font-size:.7rem;
+    color:var(--violet);
+    font-weight:700;
+    letter-spacing:.03em;
+    margin-bottom:18px;
+  }
+
   /* ===== hub ===== */
   .hero-btn{
     display:block;width:100%;text-align:center;
@@ -445,7 +478,7 @@
 </head>
 <body>
 <div class="wrap">
-  <header>
+  <header id="mainHeader" style="display:none;">
     <div class="stars">✦ ・ ✧ ・ ✦</div>
     <h1>運命の羅針盤</h1>
     <p>タロット×四柱推命×バイオリズムで読み解く、あなたの運命。</p>
@@ -459,7 +492,27 @@
     <p style="margin-top:14px;font-size:.68rem;color:#a79cc4;">Produced by TOKIYOMI（時詠）</p>
   </header>
 
-  <section id="setupScreen" class="screen active">
+  <section id="openingScreen" class="screen active">
+    <header>
+      <div class="stars">✦ ・ ✧ ・ ✦</div>
+      <div class="opening-orb">🔮</div>
+      <h1>運命の羅針盤</h1>
+      <p>タロット×四柱推命×バイオリズム。<br>3つの視点があなたの「今」を読み解きます。</p>
+    </header>
+    <div class="panel opening-panel">
+      <div class="opening-free">✨ 基本機能はすべて無料 ✨</div>
+      <p class="opening-copy">
+        今日の運勢や開運おみくじのような気軽な一枚引きから、<br>
+        恋愛・仕事をじっくり見つめ直す本格タロット鑑定まで。<br>
+        あなたの生年月日から導く四柱推命と、心身の波を映すバイオリズムを重ねて、<br>
+        できるだけ具体的な答えをお届けします。
+      </p>
+      <button type="button" class="primary" id="openingStartBtn" style="width:100%;">🔮 占いを始める</button>
+    </div>
+    <p style="text-align:center;margin-top:14px;font-size:.68rem;color:#a79cc4;">Produced by TOKIYOMI（時詠）</p>
+  </section>
+
+  <section id="setupScreen" class="screen">
     <div class="panel">
       <form id="setupForm">
         <div class="form-section">
@@ -1426,6 +1479,17 @@ function showScreen(id){
   document.getElementById(id).classList.add("active");
   window.scrollTo({top:0, behavior:"smooth"});
 }
+
+/* ===================== オープニング画面 ===================== */
+document.getElementById("openingStartBtn").addEventListener("click", (e)=>{
+  e.target.disabled = true;
+  const opening = document.getElementById("openingScreen");
+  opening.classList.add("fade-out");
+  setTimeout(()=>{
+    document.getElementById("mainHeader").style.display = "";
+    showScreen("setupScreen");
+  }, 600);
+});
 
 /* ===================== 生年月日入力（年/月/日プルダウン） =====================
    iOSのSafariは <input type="date"> の見た目がOSバージョン・機種によって大きく異なり、
