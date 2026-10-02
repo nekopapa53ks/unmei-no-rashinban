@@ -754,7 +754,7 @@ const AdMobPlugin = (IS_NATIVE && window.Capacitor.Plugins && window.Capacitor.P
 
 // ⚠️ 動作確認用フラグ：true の間はGoogle公式のテスト広告ID（審査状況に関わらず必ず表示される）を使う。
 //    実装が正しく広告を呼び出せているかを確認したら、正式リリース前に必ず false に戻すこと。
-const ADMOB_USE_TEST_ADS = true;
+const ADMOB_USE_TEST_ADS = false;
 
 // 本番の広告ユニットID（AdMobコンソールで発行済み）。
 // ⚠️ 自分の端末でテストする際は、下のtestingDevicesに端末IDを必ず追加してください。
