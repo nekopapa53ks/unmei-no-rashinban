@@ -35,9 +35,9 @@ AdMobの審査中は広告配信が制限されていて実機で全く広告が
 
 ## ④ ビルド前にやっておくこと
 - アプリアイコン・スプラッシュ画面の用意 ✅ 完了（2026-09-30、羅針盤モチーフのブランドデザインに差し替え済み）
-- スクリーンショット・アプリ説明文（App Store掲載用）— 未着手
+- スクリーンショット・アプリ説明文（App Store掲載用）✅ 完了（2026-10-02、6.5インチ・6.9インチの2サイズで入稿。素材は`app_store_screenshots/`、文章は`app_store_description.md`参照）
 - プライバシーポリシーページ ✅ 完了（`privacy-policy.html`、GitHub Pagesで公開中: `https://nekopapa53ks.github.io/unmei-no-rashinban/privacy-policy.html`、App Store ConnectのApp情報にも登録済み）
-- App Store Connectの「アプリのプライバシー」データ収集アンケート（AdMobの広告識別子収集について）— 未回答
+- App Store Connectの「アプリのプライバシー」データ収集アンケート ✅ 完了（2026-10-01、位置情報/デバイスID/広告データ→サードパーティ広告・トラッキング目的、クラッシュ/パフォーマンスデータ→アプリの機能、で回答・公開済み）
 
 ## 今後コードを変更したとき
 `www/index.html` を編集したら、下記でネイティブ側に反映してから再ビルドしてください。
